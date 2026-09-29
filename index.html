@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fit21 ✕ 遇見喜樂營養俱樂部 | 每日蛋白質與熱量管理系統</title>
+  <!-- App Icons & Mobile Home Screen PWA Support -->
+  <link rel="icon" type="image/png" href="icon.png">
+  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#10b981">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Fit21健康管理">
+
+  <!-- Public Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Default Design Tokens for Standalone / GitHub Pages */
+    :root {
+      --background: #f8fafc;
+      --foreground: #0f172a;
+      --card: #ffffff;
+      --sidebar: #f1f5f9;
+      --border: #e2e8f0;
+      --muted-foreground: #64748b;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #0f172a;
+        --foreground: #f8fafc;
+        --card: #1e293b;
+        --sidebar: #0f172a;
+        --border: #334155;
+        --muted-foreground: #94a3b8;
+      }
+    }
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased p-3 sm:p-6 min-h-screen">
+  <div class="max-w-5xl mx-auto space-y-6">
+
+    <!-- Header Banner -->
+    <header class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <!-- Brand Badge -->
+          <div class="flex flex-wrap items-center gap-2 mb-2">
+            <span class="px-3 py-1 rounded-full text-xs font-black bg-gradient-to-r from-emerald-600 to-teal-600 text-white tracking-wider shadow-xs">
+              Fit21
+            </span>
+            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20">
+              🌿 遇見喜樂營養俱樂部 客戶服務
+            </span>
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[var(--sidebar)] text-[var(--muted-foreground)]">
+              雙軌追蹤版
+            </span>
+          </div>
+
+          <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--foreground)]">智慧每日蛋白質 ＆ 熱量管理系統</h1>
+          <p class="text-xs sm:text-sm text-[var(--muted-foreground)] mt-1">
+            協助俱樂部學員輕鬆掌握每日飲食！直覺換算手掌、公克、毫升與常見生活美食
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2 self-start md:self-auto shrink-0">
+          <button onclick="resetDemoData()" class="text-xs px-3.5 py-2 rounded-xl border border-[var(--border)] hover:bg-[var(--sidebar)] text-[var(--muted-foreground)] transition font-medium">
+            🔄 重置示範數據
+          </button>
+        </div>
+      </div>
+
+      <!-- Professional Disclaimer Notice Banner -->
+      <div class="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-900 dark:text-amber-200 flex items-start gap-2.5 leading-relaxed">
+        <span class="text-base shrink-0 mt-0.5">⚠️</span>
+        <div>
+          <span class="font-bold">【貼心提醒】</span>
+          本工具提供之蛋白質與熱量換算數據<strong>僅供日常自主飲食管理評估與參考</strong>，計算基礎係依據衛生福利部國民健康署之「國人膳食營養素參考指引 (DRIs)」。食物實際之蛋白質與卡路里數值，仍會因<strong>完整重量、確切品牌及烹調方式（如生熟重、油煎炸裹粉、醬料調味等）</strong>而有所增減；<strong>特殊疾病或病態飲食請遵照專業醫師與專職營養師指導</strong>。
+        </div>
+      </div>
+    </header>
+
+    <!-- Top Dashboard: Dual Targets (Protein + Calories) -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+      <!-- Left: User Profile & Target Calculation -->
+      <div class="md:col-span-4 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4">
+        <div class="flex items-center justify-between border-b border-[var(--border)] pb-3">
+          <h2 class="text-sm font-semibold flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-bold">1</span>
+            個人目標試算
+          </h2>
+          <span class="text-[11px] text-[var(--muted-foreground)]">BMR/TDEE 連動</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div>
+            <label class="block text-[var(--muted-foreground)] mb-1">生理性別</label>
+            <select id="userGender" onchange="calculateTargets()" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-2.5 py-1.5 text-[var(--foreground)]">
+              <option value="female">女性</option>
+              <option value="male" selected>男性</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[var(--muted-foreground)] mb-1">年齡 (歲)</label>
+            <input type="number" id="userAge" value="35" min="12" max="100" oninput="calculateTargets()" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-2.5 py-1.5 text-[var(--foreground)]">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div>
+            <label class="block text-[var(--muted-foreground)] mb-1">體重 (kg)</label>
+            <input type="number" id="userWeight" value="65" min="30" max="200" step="0.5" oninput="calculateTargets()" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-2.5 py-1.5 text-[var(--foreground)]">
+          </div>
+          <div>
+            <label class="block text-[var(--muted-foreground)] mb-1">身高 (cm)</label>
+            <input type="number" id="userHeight" value="170" min="100" max="220" oninput="calculateTargets()" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-2.5 py-1.5 text-[var(--foreground)]">
+          </div>
+        </div>
+
+        <div class="text-xs">
+          <label class="block text-[var(--muted-foreground)] mb-1">體態管理目標</label>
+          <select id="userGoal" onchange="calculateTargets()" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-2.5 py-1.5 text-[var(--foreground)]">
+            <option value="fat_loss" selected>🔥 減脂塑形 (熱量赤字 -350kcal, 蛋白1.6g/kg)</option>
+            <option value="maintenance">⚖️ 健康維持 / 樂活 (平衡熱量, 蛋白1.2g/kg)</option>
+            <option value="muscle_gain">💪 運動增肌 (輕微盈餘 +250kcal, 蛋白1.8g/kg)</option>
+          </select>
+        </div>
+
+        <!-- Calculated Target Box -->
+        <div class="p-3 rounded-xl bg-blue-50/50 dark:bg-blue-950/20 border border-blue-200/50 dark:border-blue-800/50 space-y-2 text-xs">
+          <div class="grid grid-cols-2 gap-2 border-b border-blue-200/40 dark:border-blue-800/40 pb-2">
+            <div>
+              <span class="text-[11px] text-[var(--muted-foreground)] block">每日蛋白質目標</span>
+              <span id="targetProteinDisplay" class="text-xl font-black text-blue-600 dark:text-blue-400">104</span>
+              <span class="font-bold text-xs text-blue-600 dark:text-blue-400">g</span>
+            </div>
+            <div>
+              <span class="text-[11px] text-[var(--muted-foreground)] block">每日熱量預算</span>
+              <span id="targetCalorieDisplay" class="text-xl font-black text-amber-600 dark:text-amber-400">1650</span>
+              <span class="font-bold text-xs text-amber-600 dark:text-amber-400">kcal</span>
+            </div>
+          </div>
+          <div class="flex justify-between text-[11px] text-[var(--muted-foreground)] pt-0.5">
+            <span>基代 BMR: <strong id="bmrDisplay" class="text-[var(--foreground)]">1560</strong> kcal</span>
+            <span>總消耗 TDEE: <strong id="tdeeDisplay" class="text-[var(--foreground)]">2000</strong> kcal</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Dual Progress Bars (Protein vs Calories) -->
+      <div class="md:col-span-8 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm flex flex-col justify-between space-y-4">
+        <div class="flex items-center justify-between">
+          <h2 class="text-base font-semibold flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs font-bold">2</span>
+            今日雙軌儀表板 (蛋白質達標率 vs 熱量消耗)
+          </h2>
+        </div>
+
+        <div class="space-y-4">
+          <!-- 1. Protein Progress -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between text-xs">
+              <span class="font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                <span>🍗 蛋白質 (目標: 達成)</span>
+              </span>
+              <div class="space-x-2">
+                <span>已攝取: <strong id="currentIntake" class="text-[var(--foreground)]">0</strong> / <span id="targetProteinMini">104</span> g</span>
+                <span id="proteinPercentBadge" class="font-bold text-emerald-600 dark:text-emerald-400">0%</span>
+              </div>
+            </div>
+            <div class="w-full bg-[var(--sidebar)] rounded-full h-3.5 overflow-hidden border border-[var(--border)] p-0.5">
+              <div id="proteinProgressBar" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <!-- 2. Calories Progress -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between text-xs">
+              <span class="font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
+                <span>🔥 熱量預算 (目標: 不超標)</span>
+              </span>
+              <div class="space-x-2">
+                <span>已攝取: <strong id="currentCalorieIntake" class="text-[var(--foreground)]">0</strong> / <span id="targetCalorieMini">1650</span> kcal</span>
+                <span id="caloriePercentBadge" class="font-bold text-amber-600 dark:text-amber-400">0%</span>
+              </div>
+            </div>
+            <div class="w-full bg-[var(--sidebar)] rounded-full h-3.5 overflow-hidden border border-[var(--border)] p-0.5">
+              <div id="calorieProgressBar" class="bg-gradient-to-r from-amber-500 to-orange-500 h-full rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Remaining Summary Grid -->
+        <div class="grid grid-cols-3 text-center text-xs pt-1 gap-2">
+          <div class="p-2 rounded-xl bg-[var(--sidebar)]">
+            <span class="text-[var(--muted-foreground)] block text-[11px]">蛋白質剩餘</span>
+            <span class="text-base font-bold text-emerald-600 dark:text-emerald-400" id="remainingProtein">104</span>
+            <span class="text-[10px] text-[var(--muted-foreground)]">g</span>
+          </div>
+          <div class="p-2 rounded-xl bg-[var(--sidebar)]">
+            <span class="text-[var(--muted-foreground)] block text-[11px]">熱量額度剩餘</span>
+            <span class="text-base font-bold text-amber-600 dark:text-amber-400" id="remainingCalorie">1650</span>
+            <span class="text-[10px] text-[var(--muted-foreground)]">kcal</span>
+          </div>
+          <div class="p-2 rounded-xl bg-[var(--sidebar)]">
+            <span class="text-[var(--muted-foreground)] block text-[11px]">蛋白等同還差</span>
+            <span class="text-xs font-bold text-blue-600 dark:text-blue-400" id="approxRemainingShakes">約 11 份奶昔</span>
+            <span class="text-[10px] text-[var(--muted-foreground)] block">(9g / 88kcal 份)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Section: Common Foods Picker & Custom Logger -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- Left: Rich Common Food Catalog -->
+      <div class="lg:col-span-7 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border)] pb-3">
+          <div>
+            <h2 class="text-base font-bold flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xs font-bold">3</span>
+              常見食物庫（含蛋白質 ＆ 熱量）
+            </h2>
+            <p class="text-xs text-[var(--muted-foreground)]">點選食物自動填入，支援搜尋、手掌、公克與毫升</p>
+          </div>
+
+          <!-- Search input with synonyms -->
+          <div class="relative w-full sm:w-48">
+            <input type="text" id="foodSearchInput" placeholder="🔍 搜尋食物(如: 白飯/奶昔)..." oninput="handleSearch()" class="w-full text-xs rounded-xl border border-[var(--border)] bg-[var(--background)] px-3 py-1.5 text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-emerald-500">
+          </div>
+        </div>
+
+        <!-- Quick Direct Access Bar -->
+        <div class="space-y-1.5 bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/50 dark:border-amber-800/40 p-2.5 rounded-xl">
+          <div class="text-[11px] font-semibold text-amber-800 dark:text-amber-300 flex items-center gap-1.5">
+            <span>⚡ 最常用高頻快選（點擊直接帶入）：</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5 text-xs">
+            <button onclick="selectFoodItem('shake')" class="px-2.5 py-1 rounded-lg border border-emerald-300 dark:border-emerald-700 bg-emerald-50/60 dark:bg-emerald-950/30 hover:border-emerald-500 transition font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1">
+              <span>🥤 營養奶昔 (9g / 88k)</span>
+            </button>
+            <button onclick="selectFoodItem('rice_white')" class="px-2.5 py-1 rounded-lg border border-amber-300 dark:border-amber-700 bg-amber-50/60 dark:bg-amber-950/30 hover:border-amber-500 transition font-bold text-amber-800 dark:text-amber-300 flex items-center gap-1">
+              <span>🍚 白飯一碗 (160g / 280k)</span>
+            </button>
+            <button onclick="selectFoodItem('sweet_potato')" class="px-2.5 py-1 rounded-lg border border-amber-300 dark:border-amber-700 bg-white dark:bg-[var(--card)] hover:border-amber-500 transition font-medium flex items-center gap-1">
+              <span>🍠 熟地瓜 (150g / 170k)</span>
+            </button>
+            <button onclick="selectFoodItem('boiled_greens')" class="px-2.5 py-1 rounded-lg border border-emerald-300 dark:border-emerald-700 bg-emerald-50/50 dark:bg-emerald-950/30 hover:border-emerald-500 transition font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1">
+              <span>🥬 燙青菜一碗 (100g / 30k)</span>
+            </button>
+            <button onclick="selectFoodItem('broccoli')" class="px-2.5 py-1 rounded-lg border border-emerald-300 dark:border-emerald-700 bg-white dark:bg-[var(--card)] hover:border-emerald-500 transition font-medium flex items-center gap-1">
+              <span>🥦 綠花椰菜 (100g / 35k)</span>
+            </button>
+            <button onclick="selectFoodItem('cheese_slice')" class="px-2.5 py-1 rounded-lg border border-amber-300 dark:border-amber-700 bg-white dark:bg-[var(--card)] hover:border-amber-500 transition font-medium flex items-center gap-1">
+              <span>🧀 起司片 (4.5g / 60k)</span>
+            </button>
+            <button onclick="selectFoodItem('chicken_breast_cvs')" class="px-2.5 py-1 rounded-lg border border-amber-300 dark:border-amber-700 bg-white dark:bg-[var(--card)] hover:border-amber-500 transition font-medium flex items-center gap-1">
+              <span>🍗 舒肥雞胸 (28g / 135k)</span>
+            </button>
+            <button onclick="selectFoodItem('egg')" class="px-2.5 py-1 rounded-lg border border-amber-300 dark:border-amber-700 bg-white dark:bg-[var(--card)] hover:border-amber-500 transition font-medium flex items-center gap-1">
+              <span>🥚 茶葉蛋 (7g / 75k)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs" id="categoryTabs">
+          <button onclick="setCategory('all')" class="cat-tab px-3 py-1.5 rounded-lg font-medium transition whitespace-nowrap bg-emerald-600 text-white" data-cat="all">全部食物</button>
+          <button onclick="setCategory('carbs')" class="cat-tab px-3 py-1.5 rounded-lg font-medium transition whitespace-nowrap border border-[var(--border)] hover:bg-[var(--sidebar)] text-[var(--muted-foreground)]" data-cat="carbs">🍚 主食碳水</button>
+          <button onclick="setCategory('veggies')" class="cat-tab px-3 py-1.5 rounded-lg font-medium transition whitespace-nowrap border border-[var(--border)] hover:bg-[var(--sidebar)] text-[var(--muted-foreground)]" data-cat="veggies">🥦 蔬菜青菜</button>
+          <button onclick="setCategory('shake_supp')" class="cat-tab px-3 py-1.5 rounded-lg font-medium transition whitespace-nowrap border border-[var(--border)] hover:bg-[var(--sidebar)] text-[var(--muted-foreground)]" data-cat="shake_supp">🥤 奶昔/沖泡</button>
+          <button onclick="setCategory('meat_fish')" class="cat-tab px-3 py-1.5 rounded-lg font-medium transition whitespace-nowrap border border-[var(--border)] hover:bg-[var(--sidebar)] text-[var(--muted-foreground)]" data-cat="meat_fish">🥩 原型肉類/海鮮</button>
+          <button onclick="setCategory('egg_dairy')" class="cat-tab px-3 py-1.5 rounded-lg font-medium transition whitespace-nowrap border border-[var(--border)] hover:bg-[var(--sidebar)] text-[var(--muted-foreground)]" data-cat="egg_dairy">🧀 起司/蛋/乳品</button>
+          <button onclick="setCategory('beans')" class="cat-tab px-3 py-1.5 rounded-lg font-medium transition whitespace-nowrap border border-[var(--border)] hover:bg-[var(--sidebar)] text-[var(--muted-foreground)]" data-cat="beans">🌱 豆漿/植物性</button>
+          <button onclick="setCategory('meal_out')" class="cat-tab px-3 py-1.5 rounded-lg font-medium transition whitespace-nowrap border border-[var(--border)] hover:bg-[var(--sidebar)] text-[var(--muted-foreground)]" data-cat="meal_out">🍔 麥當勞/外食</button>
+          <button onclick="setCategory('fried_snack')" class="cat-tab px-3 py-1.5 rounded-lg font-medium transition whitespace-nowrap border border-[var(--border)] hover:bg-[var(--sidebar)] text-[var(--muted-foreground)]" data-cat="fried_snack">🍗 鹽酥雞/炸物</button>
+        </div>
+
+        <!-- Food Grid List -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[440px] overflow-y-auto pr-1" id="foodGrid">
+          <!-- Populated by JavaScript -->
+        </div>
+
+      </div>
+
+      <!-- Right: Meal Entry Action & Unit Fine-Tuner -->
+      <div class="lg:col-span-5 space-y-6">
+
+        <!-- Selected Food Config Card -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4">
+          <div class="flex items-center justify-between border-b border-[var(--border)] pb-3">
+            <h3 class="text-sm font-semibold flex items-center gap-1.5">
+              <span>✍️ 記錄此餐食物份量</span>
+            </h3>
+            <span class="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium" id="selectedFoodBadge">已選食物</span>
+          </div>
+
+          <!-- Food Name & Meal -->
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <div>
+              <label class="block text-[var(--muted-foreground)] mb-1">食物名稱</label>
+              <input type="text" id="activeFoodName" value="營養奶昔" class="w-full text-xs font-semibold rounded-xl border border-[var(--border)] bg-[var(--background)] px-2.5 py-2 text-[var(--foreground)]">
+            </div>
+            <div>
+              <label class="block text-[var(--muted-foreground)] mb-1">記錄時段</label>
+              <select id="activeMealTime" class="w-full text-xs rounded-xl border border-[var(--border)] bg-[var(--background)] px-2.5 py-2 text-[var(--foreground)]">
+                <option value="早餐" selected>🌅 早餐</option>
+                <option value="午餐">☀️ 午餐</option>
+                <option value="晚餐">🌙 晚餐</option>
+                <option value="點心/運動後">⚡ 點心 / 運動後</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Unit Selector Tabs -->
+          <div class="space-y-1.5">
+            <label class="block text-xs font-medium text-[var(--muted-foreground)]">選擇您方便調整的計量方式：</label>
+            <div class="grid grid-cols-4 gap-1 p-1 bg-[var(--sidebar)] rounded-xl border border-[var(--border)] text-xs text-center">
+              <button type="button" onclick="switchActiveUnit('portion')" id="tab-portion" class="py-1.5 rounded-lg font-medium transition bg-[var(--card)] text-[var(--foreground)] shadow-xs">
+                份 / 碗 / 片
+              </button>
+              <button type="button" onclick="switchActiveUnit('palm')" id="tab-palm" class="py-1.5 rounded-lg font-medium transition text-[var(--muted-foreground)]">
+                🖐️ 手掌
+              </button>
+              <button type="button" onclick="switchActiveUnit('gram')" id="tab-gram" class="py-1.5 rounded-lg font-medium transition text-[var(--muted-foreground)]">
+                ⚖️ 公克
+              </button>
+              <button type="button" onclick="switchActiveUnit('volume')" id="tab-volume" class="py-1.5 rounded-lg font-medium transition text-[var(--muted-foreground)]">
+                🥤 毫升
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic Portion Adjuster Box -->
+          <div class="p-3.5 rounded-xl border border-dashed border-[var(--border)] bg-[var(--sidebar)]/40 space-y-3">
+            
+            <!-- 1. Portion Mode -->
+            <div id="box-portion" class="space-y-2 text-xs">
+              <div class="flex items-center justify-between">
+                <span class="text-[var(--muted-foreground)]">食用份數：</span>
+                <span class="font-bold text-[var(--foreground)]" id="portionUnitLabel">份</span>
+              </div>
+              <div class="flex items-center justify-center gap-3">
+                <button type="button" onclick="adjustPortionValue(-0.5)" class="w-9 h-9 rounded-xl border border-[var(--border)] bg-[var(--card)] hover:bg-[var(--sidebar)] font-bold text-base flex items-center justify-center text-[var(--foreground)] transition">-</button>
+                <div class="text-center w-24">
+                  <input type="number" id="portionNumberInput" value="1" step="0.5" min="0.5" max="10" oninput="recalcActiveEntry()" class="w-full text-center text-lg font-extrabold rounded-xl border border-[var(--border)] bg-[var(--background)] py-1 text-[var(--foreground)]">
+                </div>
+                <button type="button" onclick="adjustPortionValue(0.5)" class="w-9 h-9 rounded-xl border border-[var(--border)] bg-[var(--card)] hover:bg-[var(--sidebar)] font-bold text-base flex items-center justify-center text-[var(--foreground)] transition">+</button>
+              </div>
+              <div class="flex justify-center gap-1.5 pt-1 text-[11px]" id="quickPortionButtons">
+                <button type="button" onclick="setFastPortion(0.5)" class="px-2.5 py-0.5 rounded-lg border border-[var(--border)] hover:border-emerald-500">0.5 份/碗</button>
+                <button type="button" onclick="setFastPortion(1)" class="px-2.5 py-0.5 rounded-lg border border-[var(--border)] hover:border-emerald-500">1 份/碗</button>
+                <button type="button" onclick="setFastPortion(1.5)" class="px-2.5 py-0.5 rounded-lg border border-[var(--border)] hover:border-emerald-500">1.5 份/碗</button>
+                <button type="button" onclick="setFastPortion(2)" class="px-2.5 py-0.5 rounded-lg border border-[var(--border)] hover:border-emerald-500">2 份/碗</button>
+              </div>
+            </div>
+
+            <!-- 2. Palm Mode -->
+            <div id="box-palm" class="hidden space-y-2 text-xs">
+              <span class="text-[var(--muted-foreground)] block">🖐️ 手掌大小估算（1掌心約 21g 蛋白質 / 160 kcal）：</span>
+              <div class="grid grid-cols-3 gap-1.5 text-center">
+                <button type="button" onclick="setPalmValue(0.5)" class="py-1.5 rounded-lg border border-[var(--border)] hover:border-emerald-500">半個掌心<br><span class="text-[10px] text-[var(--muted-foreground)]">10.5g / 80k</span></button>
+                <button type="button" onclick="setPalmValue(1.0)" class="py-1.5 rounded-lg border border-[var(--border)] hover:border-emerald-500 font-bold">1 個掌心<br><span class="text-[10px] text-[var(--muted-foreground)]">21g / 160k</span></button>
+                <button type="button" onclick="setPalmValue(1.5)" class="py-1.5 rounded-lg border border-[var(--border)] hover:border-emerald-500">1.5 掌心<br><span class="text-[10px] text-[var(--muted-foreground)]">31.5g / 240k</span></button>
+              </div>
+            </div>
+
+            <!-- 3. Gram Mode -->
+            <div id="box-gram" class="hidden space-y-2 text-xs">
+              <span class="text-[var(--muted-foreground)] block">⚖️ 輸入公克數 (g)：</span>
+              <div class="flex items-center gap-2">
+                <input type="number" id="inputGramValue" value="100" min="1" max="1000" oninput="recalcActiveEntry()" class="w-full text-center text-sm font-bold rounded-xl border border-[var(--border)] bg-[var(--background)] py-1.5 text-[var(--foreground)]">
+                <span class="font-medium">g</span>
+              </div>
+            </div>
+
+            <!-- 4. Volume Mode -->
+            <div id="box-volume" class="hidden space-y-2 text-xs">
+              <span class="text-[var(--muted-foreground)] block">🥤 輸入飲用容量 (ml 或 cc)：</span>
+              <div class="flex items-center gap-2">
+                <input type="number" id="inputVolumeValue" value="250" min="10" max="2000" oninput="recalcActiveEntry()" class="w-full text-center text-sm font-bold rounded-xl border border-[var(--border)] bg-[var(--background)] py-1.5 text-[var(--foreground)]">
+                <span class="font-medium">ml</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Total Protein & Calories calculated for this entry -->
+          <div class="p-3 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-200/50 dark:border-emerald-800/50 flex items-center justify-between">
+            <div class="text-xs">
+              <span class="text-emerald-900 dark:text-emerald-300 block font-semibold">本次預估增加</span>
+              <span class="text-[11px] text-[var(--muted-foreground)]" id="entryDetailExplanation">營養奶昔 1 份</span>
+            </div>
+            <div class="text-right flex items-baseline gap-3">
+              <div>
+                <span class="text-xl font-black text-emerald-600 dark:text-emerald-400" id="activeCalculatedProtein">9.0</span>
+                <span class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400">g 蛋白</span>
+              </div>
+              <div class="border-l border-emerald-300/40 pl-3">
+                <span class="text-lg font-bold text-amber-600 dark:text-amber-400" id="activeCalculatedCalories">88</span>
+                <span class="text-[11px] font-bold text-amber-600 dark:text-amber-400">kcal</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="button" onclick="submitActiveEntry()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl text-sm transition shadow-sm flex items-center justify-center gap-2">
+            <span>➕ 記錄加入今日攝取</span>
+          </button>
+        </div>
+
+        <!-- History Records -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-3">
+          <div class="flex items-center justify-between border-b border-[var(--border)] pb-2.5">
+            <h3 class="text-sm font-semibold">今日已記錄明細</h3>
+            <span class="text-xs text-[var(--muted-foreground)]" id="historyCount">共 0 筆</span>
+          </div>
+
+          <div id="historyList" class="space-y-2 max-h-56 overflow-y-auto pr-1 text-xs">
+            <!-- Dynamic entries -->
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Feature Architecture Notes -->
+    <footer class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-3 text-xs text-[var(--muted-foreground)]">
+      <h4 class="font-bold text-[var(--foreground)] text-sm">💡 Fit21 ✕ 遇見喜樂營養俱樂部 健康飲食全攻略：</h4>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 leading-relaxed">
+        <div>
+          <strong class="text-[var(--foreground)] block mb-1">1. 營養奶昔 (9g / 88kcal)</strong>
+          極致的高蛋白低熱量密度，是控制體重、維持肌肉與飽足感的核心工具！
+        </div>
+        <div>
+          <strong class="text-[var(--foreground)] block mb-1">2. 均衡三元素：蛋白質 ＋ 蔬菜 ＋ 碳水</strong>
+          肉類提供肌肉原料，青菜（高纖、抗氧化且熱量極低），搭配適量優質碳水（地瓜、糙米），打造不易復胖體質。
+        </div>
+        <div>
+          <strong class="text-[var(--foreground)] block mb-1">3. 外食吃得聰明、吃得開心</strong>
+          想吃鹽酥雞或麥當勞也沒問題！透過此工具隨手記錄，清楚掌握當天剩餘額度，享受美食無罪惡感。
+        </div>
+      </div>
+    </footer>
+
+    <!-- Legal Footnote -->
+    <div class="text-center text-[11px] text-[var(--muted-foreground)] pb-4 space-y-1">
+      <p>Fit21 ✕ 遇見喜樂營養俱樂部 客戶服務專用自主管理工具</p>
+      <p class="text-[10px] opacity-80">本系統依據衛福部國健署飲食參考原則建置，數據僅供個人自主健康管理參考，非屬醫療診斷處方。</p>
+    </div>
+
+  </div>
+
+  <script>
+    // Food Database with Protein AND Calories (kcal)
+    const FOOD_DATABASE = [
+      // 1. 奶昔與沖泡補充品 (超低卡、高蛋白)
+      { id: 'shake', name: '營養奶昔', category: 'shake_supp', unitType: 'portion', defaultPortion: 1, unitName: '份', proteinPerUnit: 9.0, caloriesPerUnit: 88, note: '1 份 9g 蛋白 / 僅 88 大卡 (高蛋白極低熱量)', icon: '🥤', popular: true, keywords: ['奶昔', '營養奶昔', 'shake', '賀寶芙'] },
+      { id: 'whey', name: '經典乳清蛋白', category: 'shake_supp', unitType: 'portion', defaultPortion: 1, unitName: '匙', proteinPerUnit: 24.0, caloriesPerUnit: 120, note: '1 匙約 30g 粉 ≈ 24g 蛋白 / 120 大卡', icon: '🥛', popular: true, keywords: ['乳清', '高蛋白粉', 'whey'] },
+      { id: 'soy_protein', name: '大豆分離蛋白粉', category: 'shake_supp', unitType: 'portion', defaultPortion: 1, unitName: '匙', proteinPerUnit: 20.0, caloriesPerUnit: 110, note: '純素沖泡 1 匙 ≈ 20g 蛋白 / 110 大卡', icon: '🌱', popular: false, keywords: ['大豆蛋白', '素食蛋白'] },
+
+      // 2. 主食與優質碳水 (著重重量與熱量)
+      { id: 'rice_white', name: '白米飯 (標準一碗)', category: 'carbs', unitType: 'portion', defaultPortion: 1, defaultGram: 160, unitName: '碗(160g)', proteinPerUnit: 4.8, caloriesPerUnit: 280, note: '熟重 160g 一碗 ≈ 280 大卡 (半碗 140 大卡)', icon: '🍚', popular: true, keywords: ['白飯', '米飯', '飯', '白米飯'] },
+      { id: 'rice_brown', name: '糙米飯 / 五穀飯', category: 'carbs', unitType: 'portion', defaultPortion: 1, defaultGram: 160, unitName: '碗(160g)', proteinPerUnit: 5.5, caloriesPerUnit: 260, note: '熟重 160g 一碗 ≈ 260 大卡 (高纖低GI)', icon: '🍚', popular: true, keywords: ['糙米飯', '五穀飯', '糙米', '雜糧飯'] },
+      { id: 'sweet_potato', name: '熟地瓜 / 烤地瓜', category: 'carbs', unitType: 'portion', defaultPortion: 1, defaultGram: 150, unitName: '條(中/150g)', proteinPerUnit: 2.0, caloriesPerUnit: 170, note: '中型 1 條約 150g ≈ 170 大卡 (慢碳減脂首選)', icon: '🍠', popular: true, keywords: ['地瓜', '番薯', '烤地瓜', '熟地瓜'] },
+      { id: 'oatmeal', name: '即食大燕麥片', category: 'carbs', unitType: 'gram', defaultGram: 40, proteinPerUnit: 4.8, caloriesPerUnit: 150, note: '乾燥麥片 40g (約4大湯匙) ≈ 150 大卡', icon: '🥣', popular: true, keywords: ['燕麥', '麥片', '大燕麥片'] },
+      { id: 'corn', name: '水煮甜玉米 (一根)', category: 'carbs', unitType: 'portion', defaultPortion: 1, defaultGram: 150, unitName: '根(200g)', proteinPerUnit: 4.0, caloriesPerUnit: 150, note: '中型一根淨粒約 150g ≈ 150 大卡', icon: '🌽', popular: false, keywords: ['玉米', '甜玉米', '水煮玉米'] },
+      { id: 'potato', name: '蒸馬鈴薯 / 烤洋芋', category: 'carbs', unitType: 'portion', defaultPortion: 1, defaultGram: 150, unitName: '顆(中/150g)', proteinPerUnit: 3.0, caloriesPerUnit: 115, note: '中型 1 顆 150g ≈ 115 大卡 (高飽足感)', icon: '🥔', popular: false, keywords: ['馬鈴薯', '洋芋'] },
+      { id: 'toast_whole', name: '全麥吐司 / 白吐司', category: 'carbs', unitType: 'portion', defaultPortion: 1, defaultGram: 30, unitName: '片', proteinPerUnit: 3.5, caloriesPerUnit: 75, note: '早餐常見切片吐司 1 片 ≈ 75 大卡', icon: '🍞', popular: false, keywords: ['吐司', '全麥吐司', '麵包'] },
+
+      // 3. 健康青菜與蔬菜 (著重重量與超低熱量)
+      { id: 'boiled_greens', name: '清燙青菜 (高麗菜/地瓜葉)', category: 'veggies', unitType: 'portion', defaultPortion: 1, defaultGram: 100, unitName: '碗(100g)', proteinPerUnit: 1.8, caloriesPerUnit: 30, note: '熟重一碗約 100g 清燙 ≈ 僅 30 大卡', icon: '🥬', popular: true, keywords: ['燙青菜', '青菜', '高麗菜', '地瓜葉', '空心菜'] },
+      { id: 'stirfried_greens', name: '熱炒青菜 (含烹調油)', category: 'veggies', unitType: 'portion', defaultPortion: 1, defaultGram: 100, unitName: '碗(100g)', proteinPerUnit: 1.8, caloriesPerUnit: 70, note: '熟重一碗含家常炒油 ≈ 70 大卡', icon: '🥬', popular: true, keywords: ['炒青菜', '高麗菜', '炒菜'] },
+      { id: 'broccoli', name: '綠花椰菜 (西蘭花)', category: 'veggies', unitType: 'portion', defaultPortion: 1, defaultGram: 100, unitName: '碗(100g)', proteinPerUnit: 3.0, caloriesPerUnit: 35, note: '熟重一碗 100g ≈ 35 大卡 (抗氧化冠軍)', icon: '🥦', popular: true, keywords: ['花椰菜', '西蘭花', '綠花椰'] },
+      { id: 'salad_greens', name: '生菜沙拉 (純生菜無醬)', category: 'veggies', unitType: 'portion', defaultPortion: 1, defaultGram: 150, unitName: '盒(150g)', proteinPerUnit: 1.5, caloriesPerUnit: 25, note: '超商一盒純蔬菜生菜 ≈ 25 大卡', icon: '🥗', popular: false, keywords: ['沙拉', '生菜', '生菜沙拉'] },
+      { id: 'mushrooms', name: '綜合菇類 (杏鮑菇/金針菇)', category: 'veggies', unitType: 'portion', defaultPortion: 1, defaultGram: 100, unitName: '碗(100g)', proteinPerUnit: 2.5, caloriesPerUnit: 30, note: '熟重一碗約 100g ≈ 30 大卡 (豐富膳食纖維)', icon: '🍄', popular: false, keywords: ['菇', '杏鮑菇', '金針菇', '香菇'] },
+      { id: 'tomato_cucumber', name: '大番茄 / 小黃瓜', category: 'veggies', unitType: 'portion', defaultPortion: 1, defaultGram: 150, unitName: '份(150g)', proteinPerUnit: 1.2, caloriesPerUnit: 28, note: '大番茄 1 顆或小黃瓜 1 條 ≈ 28 大卡', icon: '🍅', popular: false, keywords: ['番茄', '小黃瓜', '大番茄', '黃瓜'] },
+
+      // 4. 原型肉類與海鮮 (高蛋白模範生)
+      { id: 'chicken_breast_cvs', name: '超商舒肥雞胸肉', category: 'meat_fish', unitType: 'portion', defaultPortion: 1, defaultGram: 120, unitName: '包(120g)', proteinPerUnit: 28.0, caloriesPerUnit: 135, note: '即食舒肥包 ≈ 28g 蛋白 / 僅 135 大卡！', icon: '🍗', popular: true, keywords: ['雞胸', '舒肥', '雞胸肉'] },
+      { id: 'chicken_palm', name: '現煎雞胸肉 / 雞里肌', category: 'meat_fish', unitType: 'palm', defaultPalm: 1.0, proteinPerUnit: 22.0, caloriesPerUnit: 140, note: '1 個掌心厚度 (100g熟重) ≈ 22g 蛋白 / 140 大卡', icon: '🥩', popular: true, keywords: ['雞肉', '雞里肌'] },
+      { id: 'beef_steak', name: '牛腱肉 / 牛排', category: 'meat_fish', unitType: 'palm', defaultPalm: 1.0, proteinPerUnit: 24.0, caloriesPerUnit: 190, note: '1 個掌心大小 ≈ 24g 蛋白 / 190 大卡', icon: '🥩', popular: false, keywords: ['牛肉', '牛腱', '牛排'] },
+      { id: 'salmon', name: '厚切鮭魚片', category: 'meat_fish', unitType: 'palm', defaultPalm: 1.0, proteinPerUnit: 22.0, caloriesPerUnit: 220, note: '1 個掌心大小 ≈ 22g 蛋白 / 220 大卡 (Omega-3好油)', icon: '🐟', popular: false, keywords: ['鮭魚', '三文魚'] },
+      { id: 'tilapia', name: '鯛魚片 / 鱸魚片', category: 'meat_fish', unitType: 'palm', defaultPalm: 1.0, proteinPerUnit: 23.0, caloriesPerUnit: 110, note: '1 個掌心大小 ≈ 23g 蛋白 / 僅 110 大卡 (極低脂)', icon: '🐟', popular: true, keywords: ['鯛魚', '鱸魚', '魚排'] },
+
+      // 5. 起司、蛋類與乳製品
+      { id: 'cheese_slice', name: '原味起司片 (高鈣芝士)', category: 'egg_dairy', unitType: 'portion', defaultPortion: 1, unitName: '片', proteinPerUnit: 4.5, caloriesPerUnit: 60, note: '1 片起司 ≈ 4.5g 蛋白 / 60 大卡', icon: '🧀', popular: true, keywords: ['起司', '起司片', '芝士', '芝士片', '乳酪', 'cheese'] },
+      { id: 'cheese_stick', name: '莫札瑞拉起司條', category: 'egg_dairy', unitType: 'portion', defaultPortion: 1, unitName: '條', proteinPerUnit: 6.0, caloriesPerUnit: 80, note: '點心起司條 1 條 ≈ 6g 蛋白 / 80 大卡', icon: '🧀', popular: true, keywords: ['起司條', '乳酪條', '莫札瑞拉'] },
+      { id: 'egg', name: '茶葉蛋 / 水煮蛋', category: 'egg_dairy', unitType: 'portion', defaultPortion: 1, unitName: '顆', proteinPerUnit: 7.0, caloriesPerUnit: 75, note: '1 顆中型蛋 ≈ 7g 蛋白 / 75 大卡', icon: '🥚', popular: true, keywords: ['蛋', '茶葉蛋', '水煮蛋', '雞蛋'] },
+      { id: 'egg_fried', name: '荷包蛋 / 炒蛋 (煎油)', category: 'egg_dairy', unitType: 'portion', defaultPortion: 1, unitName: '顆', proteinPerUnit: 7.0, caloriesPerUnit: 110, note: '加油煎熟 1 顆 ≈ 7g 蛋白 / 110 大卡', icon: '🍳', popular: false, keywords: ['荷包蛋', '炒蛋'] },
+      { id: 'milk_cup', name: '全脂鮮乳 (240ml)', category: 'egg_dairy', unitType: 'volume', defaultVolume: 240, density: 0.032, unitName: '杯(240ml)', proteinPerUnit: 7.7, caloriesPerUnit: 150, note: '1 杯 (240ml) ≈ 7.7g 蛋白 / 150 大卡', icon: '🥛', popular: true, keywords: ['牛奶', '鮮奶', '鮮乳', 'milk'] },
+      { id: 'greek_yogurt', name: '希臘式優格 (無糖)', category: 'egg_dairy', unitType: 'gram', defaultGram: 100, density: 0.10, unitName: '杯(100g)', proteinPerUnit: 10.0, caloriesPerUnit: 90, note: '100g ≈ 10g 蛋白 / 僅 90 大卡', icon: '🥣', popular: false, keywords: ['優格', '希臘優格'] },
+
+      // 6. 豆製品與植物性
+      { id: 'soymilk_cvs', name: '無糖高纖豆漿 (盒裝)', category: 'beans', unitType: 'volume', defaultVolume: 400, density: 0.035, unitName: '盒(400ml)', proteinPerUnit: 14.2, caloriesPerUnit: 135, note: '超商 400ml ≈ 14.2g 蛋白 / 135 大卡', icon: '🧃', popular: true, keywords: ['豆漿', '無糖豆漿', '黑豆漿'] },
+      { id: 'tofu_firm', name: '傳統板豆腐', category: 'beans', unitType: 'portion', defaultPortion: 1, unitName: '半塊(150g)', proteinPerUnit: 12.8, caloriesPerUnit: 130, note: '板豆腐半塊 ≈ 12.8g 蛋白 / 130 大卡', icon: '🧊', popular: true, keywords: ['豆腐', '板豆腐'] },
+      { id: 'tofu_soft', name: '嫩豆腐 / 盒裝豆腐', category: 'beans', unitType: 'portion', defaultPortion: 1, unitName: '半盒(150g)', proteinPerUnit: 7.5, caloriesPerUnit: 75, note: '嫩豆腐半盒 ≈ 7.5g 蛋白 / 75 大卡', icon: '🧊', popular: false, keywords: ['嫩豆腐', '盒裝豆腐'] },
+      { id: 'edamame', name: '熟毛豆仁', category: 'beans', unitType: 'gram', defaultGram: 100, density: 0.138, unitName: '碗(100g)', proteinPerUnit: 13.8, caloriesPerUnit: 125, note: '毛豆仁 100g ≈ 13.8g 蛋白 / 125 大卡', icon: '🫛', popular: false, keywords: ['毛豆', '毛豆仁'] },
+
+      // 7. 麥當勞與連鎖速食
+      { id: 'mcd_beef_patty_small', name: '麥當勞純牛肉片 (大麥克/小漢堡)', category: 'meal_out', unitType: 'portion', defaultPortion: 1, unitName: '片', proteinPerUnit: 6.5, caloriesPerUnit: 80, note: '單片純牛肉餅 ≈ 6.5g 蛋白 / 80 大卡', icon: '🍔', popular: true, keywords: ['麥當勞', '漢堡片', '牛肉片', '漢堡肉', '大麥克'] },
+      { id: 'mcd_beef_patty_4oz', name: '麥當勞四盎司牛肉餅 (厚片)', category: 'meal_out', unitType: 'portion', defaultPortion: 1, unitName: '片', proteinPerUnit: 19.0, caloriesPerUnit: 220, note: '四盎司厚牛排 ≈ 19g 蛋白 / 220 大卡', icon: '🥩', popular: true, keywords: ['麥當勞', '四盎司', '厚牛肉', '漢堡肉', '漢堡片'] },
+      { id: 'mcd_pork_patty', name: '麥當勞滿福堡豬肉餅', category: 'meal_out', unitType: 'portion', defaultPortion: 1, unitName: '片', proteinPerUnit: 7.5, caloriesPerUnit: 140, note: '早餐豬肉排 1 片 ≈ 7.5g 蛋白 / 140 大卡', icon: '🍔', popular: false, keywords: ['麥當勞', '滿福堡', '豬肉片', '漢堡肉'] },
+      { id: 'mcd_big_mac', name: '麥當勞大麥克漢堡 (整顆)', category: 'meal_out', unitType: 'portion', defaultPortion: 1, unitName: '顆', proteinPerUnit: 26.0, caloriesPerUnit: 550, note: '雙層牛+麵包+起司整份 ≈ 26g 蛋白 / 550 大卡', icon: '🍔', popular: true, keywords: ['麥當勞', '大麥克', '漢堡', 'big mac'] },
+      { id: 'mcd_double_cheese', name: '麥當勞雙層牛肉吉事堡 (整顆)', category: 'meal_out', unitType: 'portion', defaultPortion: 1, unitName: '顆', proteinPerUnit: 26.0, caloriesPerUnit: 460, note: '雙牛+雙起司整份 ≈ 26g 蛋白 / 460 大卡', icon: '🍔', popular: false, keywords: ['麥當勞', '雙層牛肉吉事堡', '吉事堡'] },
+
+      // 8. 鹽酥雞與夜市炸物
+      { id: 'fried_chicken_small', name: '鹽酥雞 (小份/無骨)', category: 'fried_snack', unitType: 'portion', defaultPortion: 1, unitName: '份(小)', proteinPerUnit: 18.0, caloriesPerUnit: 380, note: '小份純肉 80g ≈ 18g 蛋白 / 裹粉油炸約 380 大卡', icon: '🍗', popular: true, keywords: ['鹽酥雞', '鹹酥雞', '炸雞', '雞肉', '小份'] },
+      { id: 'fried_chicken_large', name: '鹽酥雞 (大份/無骨)', category: 'fried_snack', unitType: 'portion', defaultPortion: 1, unitName: '份(大)', proteinPerUnit: 35.0, caloriesPerUnit: 680, note: '大份純肉 150g ≈ 35g 蛋白 / 約 680 大卡', icon: '🍗', popular: true, keywords: ['鹽酥雞', '鹹酥雞', '大份', '炸雞'] },
+      { id: 'fried_chicken_cutlet', name: '傳統大香雞排 (整片)', category: 'fried_snack', unitType: 'portion', defaultPortion: 1, unitName: '片', proteinPerUnit: 38.0, caloriesPerUnit: 650, note: '整片肉厚實 ≈ 38g 蛋白 / 約 650 大卡', icon: '🍗', popular: true, keywords: ['雞排', '大雞排', '炸雞排', '脆皮雞排'] },
+      { id: 'fried_squid', name: '炸深海魷魚 / 魷魚圈', category: 'fried_snack', unitType: 'portion', defaultPortion: 1, unitName: '份', proteinPerUnit: 16.0, caloriesPerUnit: 280, note: '海鮮高蛋白 ≈ 16g 蛋白 / 約 280 大卡', icon: '🦑', popular: true, keywords: ['魷魚', '炸魷魚', '魷魚圈', '花枝'] },
+      { id: 'fried_tofu_skin', name: '炸豆包 / 炸生豆皮', category: 'fried_snack', unitType: 'portion', defaultPortion: 1, unitName: '塊', proteinPerUnit: 6.5, caloriesPerUnit: 180, note: '黃豆製成，一塊炸豆包 ≈ 6.5g 蛋白 / 180 大卡', icon: '🌱', popular: false, keywords: ['豆包', '豆皮', '炸豆包'] },
+      { id: 'fried_tempura', name: '炸甜不辣 (一份4-5條)', category: 'fried_snack', unitType: 'portion', defaultPortion: 1, unitName: '份', proteinPerUnit: 5.0, caloriesPerUnit: 320, note: '樹薯粉吸油多，蛋白僅 5g / 熱量高達 320 大卡', icon: '🍢', popular: false, keywords: ['甜不辣', '天婦羅'] }
+    ];
+
+    // Global State
+    let currentCategory = 'all';
+    let currentTargetProtein = 104;
+    let currentTargetCalorie = 1650;
+    let selectedFood = FOOD_DATABASE[0]; // Default: 營養奶昔
+    let currentUnit = 'portion'; // 'portion' | 'palm' | 'gram' | 'volume'
+    let historyRecords = [];
+
+    window.addEventListener('DOMContentLoaded', () => {
+      calculateTargets();
+      renderFoodGrid();
+      selectFoodItem('shake');
+      resetDemoData();
+    });
+
+    // 1. Calculate Targets (Protein + BMR / TDEE / Calories)
+    function calculateTargets() {
+      const gender = document.getElementById('userGender').value;
+      const age = parseFloat(document.getElementById('userAge').value) || 30;
+      const weight = parseFloat(document.getElementById('userWeight').value) || 60;
+      const height = parseFloat(document.getElementById('userHeight').value) || 165;
+      const goal = document.getElementById('userGoal').value;
+
+      // BMR calculation (Mifflin-St Jeor)
+      let bmr = (10 * weight) + (6.25 * height) - (5 * age);
+      bmr += (gender === 'male' ? 5 : -161);
+      bmr = Math.round(bmr);
+      document.getElementById('bmrDisplay').textContent = bmr;
+
+      // Activity multiplier -> TDEE
+      let tdee = Math.round(bmr * 1.35); // Moderate average activity
+      document.getElementById('tdeeDisplay').textContent = tdee;
+
+      // Protein & Calorie Target based on Goal
+      let proteinMultiplier = 1.2;
+      let calorieTarget = tdee;
+
+      if (goal === 'fat_loss') {
+        proteinMultiplier = 1.6;
+        calorieTarget = Math.max(1200, tdee - 350);
+      } else if (goal === 'maintenance') {
+        proteinMultiplier = 1.2;
+        calorieTarget = tdee;
+      } else if (goal === 'muscle_gain') {
+        proteinMultiplier = 1.8;
+        calorieTarget = tdee + 250;
+      }
+
+      currentTargetProtein = Math.round(weight * proteinMultiplier);
+      currentTargetCalorie = calorieTarget;
+
+      document.getElementById('targetProteinDisplay').textContent = currentTargetProtein;
+      document.getElementById('targetCalorieDisplay').textContent = currentTargetCalorie;
+      document.getElementById('targetProteinMini').textContent = currentTargetProtein;
+      document.getElementById('targetCalorieMini').textContent = currentTargetCalorie;
+
+      updateDashboard();
+    }
+
+    // 2. Render Food Grid
+    function renderFoodGrid(filteredList = null) {
+      const list = filteredList || (currentCategory === 'all' 
+        ? FOOD_DATABASE 
+        : FOOD_DATABASE.filter(f => f.category === currentCategory));
+
+      const grid = document.getElementById('foodGrid');
+      if (list.length === 0) {
+        grid.innerHTML = `<div class="col-span-2 text-center py-8 text-xs text-[var(--muted-foreground)]">找不到相符的食物項目</div>`;
+        return;
+      }
+
+      grid.innerHTML = list.map(item => {
+        const isSelected = selectedFood && selectedFood.id === item.id;
+        const isShake = item.id === 'shake';
+        return `
+          <div onclick="selectFoodItem('${item.id}')" class="cursor-pointer p-3 rounded-xl border transition-all text-xs flex items-center justify-between gap-2.5 ${isSelected ? 'border-emerald-500 bg-emerald-500/10 shadow-xs' : 'border-[var(--border)] hover:border-emerald-500/50 bg-[var(--sidebar)]/30 hover:bg-[var(--sidebar)]'}">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span class="text-xl shrink-0">${item.icon}</span>
+              <div class="truncate">
+                <div class="font-bold text-[var(--foreground)] truncate flex items-center gap-1.5">
+                  ${item.name}
+                  ${isShake ? '<span class="px-1.5 py-0.2 rounded text-[10px] bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 font-medium">9g / 88卡</span>' : ''}
+                </div>
+                <div class="text-[11px] text-[var(--muted-foreground)] truncate">${item.note}</div>
+              </div>
+            </div>
+            <div class="text-right shrink-0">
+              <div class="font-black text-emerald-600 dark:text-emerald-400 text-sm">${item.proteinPerUnit}g</div>
+              <div class="text-[11px] font-semibold text-amber-600 dark:text-amber-400">${item.caloriesPerUnit} kcal</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // 3. Category Filter
+    function setCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('#categoryTabs button').forEach(btn => {
+        if (btn.getAttribute('data-cat') === cat) {
+          btn.className = 'cat-tab px-3 py-1.5 rounded-lg font-medium transition whitespace-nowrap bg-emerald-600 text-white';
+        } else {
+          btn.className = 'cat-tab px-3 py-1.5 rounded-lg font-medium transition whitespace-nowrap border border-[var(--border)] hover:bg-[var(--sidebar)] text-[var(--muted-foreground)]';
+        }
+      });
+      document.getElementById('foodSearchInput').value = '';
+      renderFoodGrid();
+    }
+
+    // 4. Search Filter
+    function handleSearch() {
+      const q = document.getElementById('foodSearchInput').value.trim().toLowerCase();
+      if (!q) {
+        renderFoodGrid();
+        return;
+      }
+      const filtered = FOOD_DATABASE.filter(f => {
+        const inName = f.name.toLowerCase().includes(q);
+        const inNote = f.note.toLowerCase().includes(q);
+        const inKeys = f.keywords ? f.keywords.some(k => k.toLowerCase().includes(q)) : false;
+        return inName || inNote || inKeys;
+      });
+      renderFoodGrid(filtered);
+    }
+
+    // 5. Select Food Item
+    function selectFoodItem(id) {
+      const food = FOOD_DATABASE.find(f => f.id === id);
+      if (!food) return;
+      selectedFood = food;
+      renderFoodGrid();
+
+      document.getElementById('activeFoodName').value = food.name;
+      document.getElementById('selectedFoodBadge').textContent = `已選取：${food.name}`;
+
+      switchActiveUnit(food.unitType || 'portion');
+      if (food.unitType === 'portion') {
+        document.getElementById('portionNumberInput').value = food.defaultPortion || 1;
+        document.getElementById('portionUnitLabel').textContent = food.unitName || '份';
+      } else if (food.unitType === 'palm') {
+        setPalmValue(food.defaultPalm || 1.0);
+      } else if (food.unitType === 'gram') {
+        document.getElementById('inputGramValue').value = food.defaultGram || 100;
+      } else if (food.unitType === 'volume') {
+        document.getElementById('inputVolumeValue').value = food.defaultVolume || 250;
+      }
+
+      recalcActiveEntry();
+    }
+
+    // 6. Unit Switching
+    function switchActiveUnit(unit) {
+      currentUnit = unit;
+      ['portion', 'palm', 'gram', 'volume'].forEach(u => {
+        const tab = document.getElementById(`tab-${u}`);
+        const box = document.getElementById(`box-${u}`);
+        if (u === unit) {
+          tab.classList.add('bg-[var(--card)]', 'text-[var(--foreground)]', 'shadow-xs');
+          tab.classList.remove('text-[var(--muted-foreground)]');
+          box.classList.remove('hidden');
+        } else {
+          tab.classList.remove('bg-[var(--card)]', 'text-[var(--foreground)]', 'shadow-xs');
+          tab.classList.add('text-[var(--muted-foreground)]');
+          box.classList.add('hidden');
+        }
+      });
+      recalcActiveEntry();
+    }
+
+    // Stepper adjusters
+    function adjustPortionValue(delta) {
+      const input = document.getElementById('portionNumberInput');
+      let val = Math.max(0.5, (parseFloat(input.value) || 1) + delta);
+      input.value = val;
+      recalcActiveEntry();
+    }
+
+    function setFastPortion(val) {
+      document.getElementById('portionNumberInput').value = val;
+      recalcActiveEntry();
+    }
+
+    let currentPalmVal = 1.0;
+    function setPalmValue(palm) {
+      currentPalmVal = palm;
+      recalcActiveEntry();
+    }
+
+    // 7. Calculate Active Entry Protein AND Calories
+    function recalcActiveEntry() {
+      let protein = 0;
+      let calories = 0;
+      let explanation = '';
+
+      if (currentUnit === 'portion') {
+        const count = parseFloat(document.getElementById('portionNumberInput').value) || 1;
+        const baseProtein = selectedFood ? selectedFood.proteinPerUnit : 9.0;
+        const baseCalorie = selectedFood ? selectedFood.caloriesPerUnit : 88;
+        protein = count * baseProtein;
+        calories = Math.round(count * baseCalorie);
+        explanation = `${selectedFood.name} × ${count} ${selectedFood.unitName || '份'}`;
+      } else if (currentUnit === 'palm') {
+        protein = currentPalmVal * 21.0;
+        calories = Math.round(currentPalmVal * 160.0);
+        explanation = `約 ${currentPalmVal} 個掌心大小 (21g 蛋白 / 160 kcal)`;
+      } else if (currentUnit === 'gram') {
+        const grams = parseFloat(document.getElementById('inputGramValue').value) || 100;
+        const pRatio = selectedFood ? (selectedFood.proteinPerUnit / (selectedFood.defaultGram || 100)) : 0.22;
+        const cRatio = selectedFood ? (selectedFood.caloriesPerUnit / (selectedFood.defaultGram || 100)) : 1.4;
+        protein = grams * pRatio;
+        calories = Math.round(grams * cRatio);
+        explanation = `重量 ${grams}g (蛋白約 ${protein.toFixed(1)}g / ${calories} kcal)`;
+      } else if (currentUnit === 'volume') {
+        const ml = parseFloat(document.getElementById('inputVolumeValue').value) || 250;
+        const pRatio = selectedFood ? (selectedFood.proteinPerUnit / (selectedFood.defaultVolume || 250)) : 0.035;
+        const cRatio = selectedFood ? (selectedFood.caloriesPerUnit / (selectedFood.defaultVolume || 250)) : 0.45;
+        protein = ml * pRatio;
+        calories = Math.round(ml * cRatio);
+        explanation = `容量 ${ml}ml (蛋白約 ${protein.toFixed(1)}g / ${calories} kcal)`;
+      }
+
+      document.getElementById('activeCalculatedProtein').textContent = protein.toFixed(1);
+      document.getElementById('activeCalculatedCalories').textContent = calories;
+      document.getElementById('entryDetailExplanation').textContent = explanation;
+    }
+
+    // 8. Submit Entry
+    function submitActiveEntry() {
+      const foodName = document.getElementById('activeFoodName').value.trim() || selectedFood.name;
+      const mealTime = document.getElementById('activeMealTime').value;
+      const protein = parseFloat(document.getElementById('activeCalculatedProtein').textContent) || 0;
+      const calories = parseInt(document.getElementById('activeCalculatedCalories').textContent) || 0;
+      const note = document.getElementById('entryDetailExplanation').textContent;
+
+      historyRecords.push({
+        id: Date.now(),
+        name: foodName,
+        meal: mealTime,
+        protein,
+        calories,
+        note
+      });
+
+      renderHistory();
+      updateDashboard();
+    }
+
+    function removeRecord(id) {
+      historyRecords = historyRecords.filter(r => r.id !== id);
+      renderHistory();
+      updateDashboard();
+    }
+
+    // 9. Render History
+    function renderHistory() {
+      const list = document.getElementById('historyList');
+      const count = document.getElementById('historyCount');
+      count.textContent = `共 ${historyRecords.length} 筆`;
+
+      if (historyRecords.length === 0) {
+        list.innerHTML = `<div class="text-center py-6 text-xs text-[var(--muted-foreground)]">今日尚未加入任何飲食紀錄</div>`;
+        return;
+      }
+
+      list.innerHTML = historyRecords.slice().reverse().map(r => `
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-[var(--sidebar)] border border-[var(--border)] text-xs">
+          <div class="space-y-0.5">
+            <div class="flex items-center gap-1.5 font-semibold text-[var(--foreground)]">
+              <span>${r.name}</span>
+              <span class="text-[10px] px-1.5 py-0.2 rounded bg-[var(--card)] text-[var(--muted-foreground)] border border-[var(--border)]">${r.meal}</span>
+            </div>
+            <div class="text-[11px] text-[var(--muted-foreground)]">${r.note}</div>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="font-extrabold text-emerald-600 dark:text-emerald-400 text-sm">+${r.protein.toFixed(1)}g</span>
+            <span class="font-bold text-amber-600 dark:text-amber-400 text-xs">${r.calories} kcal</span>
+            <button onclick="removeRecord(${r.id})" class="text-[var(--muted-foreground)] hover:text-red-500 transition px-1">✕</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // 10. Dashboard Update (Dual Bars)
+    function updateDashboard() {
+      const totalProtein = historyRecords.reduce((sum, r) => sum + r.protein, 0);
+      const totalCalories = historyRecords.reduce((sum, r) => sum + (r.calories || 0), 0);
+
+      const remainingProtein = Math.max(0, currentTargetProtein - totalProtein);
+      const remainingCalories = Math.max(0, currentTargetCalorie - totalCalories);
+
+      const proteinPercent = Math.min(100, Math.round((totalProtein / currentTargetProtein) * 100));
+      const caloriePercent = Math.min(100, Math.round((totalCalories / currentTargetCalorie) * 100));
+
+      document.getElementById('currentIntake').textContent = totalProtein.toFixed(1);
+      document.getElementById('remainingProtein').textContent = remainingProtein.toFixed(1);
+      document.getElementById('proteinPercentBadge').textContent = `${proteinPercent}%`;
+      document.getElementById('proteinProgressBar').style.width = `${proteinPercent}%`;
+
+      document.getElementById('currentCalorieIntake').textContent = totalCalories;
+      document.getElementById('remainingCalorie').textContent = remainingCalories;
+      document.getElementById('caloriePercentBadge').textContent = `${caloriePercent}%`;
+      document.getElementById('calorieProgressBar').style.width = `${caloriePercent}%`;
+
+      if (totalCalories > currentTargetCalorie) {
+        document.getElementById('remainingCalorie').innerHTML = `<span class="text-red-500 font-bold">超出 ${totalCalories - currentTargetCalorie}</span>`;
+      }
+
+      const shakesNeeded = (remainingProtein / 9).toFixed(1);
+      document.getElementById('approxRemainingShakes').textContent = remainingProtein > 0 
+        ? `約 ${shakesNeeded} 份奶昔` 
+        : '蛋白質已順利達標 🎉';
+    }
+
+    // Reset Demo Data
+    function resetDemoData() {
+      historyRecords = [
+        { id: 1, name: '營養奶昔', meal: '早餐', protein: 9.0, calories: 88, note: '營養奶昔 × 1 份' },
+        { id: 2, name: '白米飯 (標準一碗)', meal: '午餐', protein: 2.4, calories: 140, note: '白米飯 × 0.5 碗 (半碗)' },
+        { id: 3, name: '超商舒肥雞胸肉', meal: '午餐', protein: 28.0, calories: 135, note: '即食舒肥包 × 1 包' },
+        { id: 4, name: '清燙青菜 (高麗菜/地瓜葉)', meal: '午餐', protein: 1.8, calories: 30, note: '燙青菜 × 1 碗' }
+      ];
+      document.getElementById('userWeight').value = 65;
+      document.getElementById('userAge').value = 35;
+      calculateTargets();
+      renderHistory();
+      updateDashboard();
+    }
+  </script>
+</body>
+</html>

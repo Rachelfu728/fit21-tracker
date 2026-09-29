@@ -1,0 +1,17 @@
+{
+  "name": "Fit21 ✕ 遇見喜樂 每日營養追蹤器",
+  "short_name": "Fit21健康管理",
+  "description": "每日蛋白質與熱量直覺計算器",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#10b981",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
