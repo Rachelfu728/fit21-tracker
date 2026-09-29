@@ -247,6 +247,21 @@
             <button onclick="selectFoodItem('shake')" class="px-2.5 py-1 rounded-lg border border-emerald-300 dark:border-emerald-700 bg-emerald-50/60 dark:bg-emerald-950/30 hover:border-emerald-500 transition font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1">
               <span>🥤 營養奶昔 (9g / 88k)</span>
             </button>
+            <button onclick="selectFoodItem('guava')" class="px-2.5 py-1 rounded-lg border border-emerald-300 dark:border-emerald-700 bg-emerald-50/50 dark:bg-emerald-950/30 hover:border-emerald-500 transition font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1">
+              <span>🍈 珍珠芭樂 (1顆/70k)</span>
+            </button>
+            <button onclick="selectFoodItem('apple')" class="px-2.5 py-1 rounded-lg border border-rose-300 dark:border-rose-700 bg-rose-50/50 dark:bg-rose-950/30 hover:border-rose-500 transition font-bold text-rose-800 dark:text-rose-300 flex items-center gap-1">
+              <span>🍎 蘋果 (1顆/60k)</span>
+            </button>
+            <button onclick="selectFoodItem('banana')" class="px-2.5 py-1 rounded-lg border border-amber-300 dark:border-amber-700 bg-amber-50/60 dark:bg-amber-950/30 hover:border-amber-500 transition font-bold text-amber-800 dark:text-amber-300 flex items-center gap-1">
+              <span>🍌 香蕉 (1根/90k)</span>
+            </button>
+            <button onclick="selectFoodItem('dumpling_pork')" class="px-2.5 py-1 rounded-lg border border-amber-300 dark:border-amber-700 bg-amber-50/60 dark:bg-amber-950/30 hover:border-amber-500 transition font-bold text-amber-800 dark:text-amber-300 flex items-center gap-1">
+              <span>🥟 招牌水餃 (10顆/550k)</span>
+            </button>
+            <button onclick="selectFoodItem('noodle_soup')" class="px-2.5 py-1 rounded-lg border border-amber-300 dark:border-amber-700 bg-white dark:bg-[var(--card)] hover:border-amber-500 transition font-medium flex items-center gap-1">
+              <span>🍜 陽春湯麵 (1碗/320k)</span>
+            </button>
             <button onclick="selectFoodItem('rice_white')" class="px-2.5 py-1 rounded-lg border border-amber-300 dark:border-amber-700 bg-amber-50/60 dark:bg-amber-950/30 hover:border-amber-500 transition font-bold text-amber-800 dark:text-amber-300 flex items-center gap-1">
               <span>🍚 白飯一碗 (160g / 280k)</span>
             </button>
@@ -255,9 +270,6 @@
             </button>
             <button onclick="selectFoodItem('boiled_greens')" class="px-2.5 py-1 rounded-lg border border-emerald-300 dark:border-emerald-700 bg-emerald-50/50 dark:bg-emerald-950/30 hover:border-emerald-500 transition font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1">
               <span>🥬 燙青菜一碗 (100g / 30k)</span>
-            </button>
-            <button onclick="selectFoodItem('broccoli')" class="px-2.5 py-1 rounded-lg border border-emerald-300 dark:border-emerald-700 bg-white dark:bg-[var(--card)] hover:border-emerald-500 transition font-medium flex items-center gap-1">
-              <span>🥦 綠花椰菜 (100g / 35k)</span>
             </button>
             <button onclick="selectFoodItem('cheese_slice')" class="px-2.5 py-1 rounded-lg border border-amber-300 dark:border-amber-700 bg-white dark:bg-[var(--card)] hover:border-amber-500 transition font-medium flex items-center gap-1">
               <span>🧀 起司片 (4.5g / 60k)</span>
@@ -274,7 +286,9 @@
         <!-- Category Tabs -->
         <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs" id="categoryTabs">
           <button onclick="setCategory('all')" class="cat-tab px-3 py-1.5 rounded-lg font-medium transition whitespace-nowrap bg-emerald-600 text-white" data-cat="all">全部食物</button>
-          <button onclick="setCategory('carbs')" class="cat-tab px-3 py-1.5 rounded-lg font-medium transition whitespace-nowrap border border-[var(--border)] hover:bg-[var(--sidebar)] text-[var(--muted-foreground)]" data-cat="carbs">🍚 主食碳水</button>
+          <button onclick="setCategory('fruits')" class="cat-tab px-3 py-1.5 rounded-lg font-medium transition whitespace-nowrap border border-[var(--border)] hover:bg-[var(--sidebar)] text-[var(--muted-foreground)]" data-cat="fruits">🍎 新鮮水果</button>
+          <button onclick="setCategory('noodles_dumplings')" class="cat-tab px-3 py-1.5 rounded-lg font-medium transition whitespace-nowrap border border-[var(--border)] hover:bg-[var(--sidebar)] text-[var(--muted-foreground)]" data-cat="noodles_dumplings">🥟 水餃/麵食</button>
+          <button onclick="setCategory('carbs')" class="cat-tab px-3 py-1.5 rounded-lg font-medium transition whitespace-nowrap border border-[var(--border)] hover:bg-[var(--sidebar)] text-[var(--muted-foreground)]" data-cat="carbs">🍚 米飯穀物</button>
           <button onclick="setCategory('veggies')" class="cat-tab px-3 py-1.5 rounded-lg font-medium transition whitespace-nowrap border border-[var(--border)] hover:bg-[var(--sidebar)] text-[var(--muted-foreground)]" data-cat="veggies">🥦 蔬菜青菜</button>
           <button onclick="setCategory('shake_supp')" class="cat-tab px-3 py-1.5 rounded-lg font-medium transition whitespace-nowrap border border-[var(--border)] hover:bg-[var(--sidebar)] text-[var(--muted-foreground)]" data-cat="shake_supp">🥤 奶昔/沖泡</button>
           <button onclick="setCategory('meat_fish')" class="cat-tab px-3 py-1.5 rounded-lg font-medium transition whitespace-nowrap border border-[var(--border)] hover:bg-[var(--sidebar)] text-[var(--muted-foreground)]" data-cat="meat_fish">🥩 原型肉類/海鮮</button>
@@ -436,18 +450,22 @@
     <!-- Feature Architecture Notes -->
     <footer class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-3 text-xs text-[var(--muted-foreground)]">
       <h4 class="font-bold text-[var(--foreground)] text-sm">💡 Fit21 ✕ 遇見喜樂營養俱樂部 健康飲食全攻略：</h4>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 leading-relaxed">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 leading-relaxed">
         <div>
           <strong class="text-[var(--foreground)] block mb-1">1. 營養奶昔 (9g / 88kcal)</strong>
           極致的高蛋白低熱量密度，是控制體重、維持肌肉與飽足感的核心工具！
         </div>
         <div>
-          <strong class="text-[var(--foreground)] block mb-1">2. 均衡三元素：蛋白質 ＋ 蔬菜 ＋ 碳水</strong>
-          肉類提供肌肉原料，青菜（高纖、抗氧化且熱量極低），搭配適量優質碳水（地瓜、糙米），打造不易復胖體質。
+          <strong class="text-[var(--foreground)] block mb-1">2. 均衡基礎：蛋白質＋蔬菜＋優質碳水</strong>
+          肉類豆類提供肌肉原料，青菜（高纖、抗氧化且熱量極低），搭配適量糙米或地瓜，打造不易復胖體質。
         </div>
         <div>
-          <strong class="text-[var(--foreground)] block mb-1">3. 外食吃得聰明、吃得開心</strong>
-          想吃鹽酥雞或麥當勞也沒問題！透過此工具隨手記錄，清楚掌握當天剩餘額度，享受美食無罪惡感。
+          <strong class="text-[var(--foreground)] block mb-1">3. 水果吃對時機與份量</strong>
+          依國健署指引每日建議 2~3 份（1 份約拳頭大 ≈ 60 大卡），減脂推薦芭樂、蘋果、奇異果，高纖低GI！
+        </div>
+        <div>
+          <strong class="text-[var(--foreground)] block mb-1">4. 外食吃得聰明、吃得開心</strong>
+          水餃、麵食、甚至麥當勞與鹽酥雞皆有收錄！隨手記錄掌握熱量預算，安心享受美食無負擔。
         </div>
       </div>
     </footer>
@@ -477,6 +495,18 @@
       { id: 'potato', name: '蒸馬鈴薯 / 烤洋芋', category: 'carbs', unitType: 'portion', defaultPortion: 1, defaultGram: 150, unitName: '顆(中/150g)', proteinPerUnit: 3.0, caloriesPerUnit: 115, note: '中型 1 顆 150g ≈ 115 大卡 (高飽足感)', icon: '🥔', popular: false, keywords: ['馬鈴薯', '洋芋'] },
       { id: 'toast_whole', name: '全麥吐司 / 白吐司', category: 'carbs', unitType: 'portion', defaultPortion: 1, defaultGram: 30, unitName: '片', proteinPerUnit: 3.5, caloriesPerUnit: 75, note: '早餐常見切片吐司 1 片 ≈ 75 大卡', icon: '🍞', popular: false, keywords: ['吐司', '全麥吐司', '麵包'] },
 
+      // 3. 水餃、煎餃與經典麵食 (外食族超高頻主食)
+      { id: 'dumpling_pork', name: '高麗菜豬肉水餃', category: 'noodles_dumplings', unitType: 'portion', defaultPortion: 10, unitName: '顆', proteinPerUnit: 2.5, caloriesPerUnit: 55, note: '1 顆約 55 大卡 / 2.5g 蛋白 (10 顆約 550 大卡 / 25g 蛋白)', icon: '🥟', popular: true, keywords: ['水餃', '高麗菜水餃', '豬肉水餃', '餃子', '水餃子'] },
+      { id: 'dumpling_chives', name: '韭菜豬肉水餃', category: 'noodles_dumplings', unitType: 'portion', defaultPortion: 10, unitName: '顆', proteinPerUnit: 2.6, caloriesPerUnit: 58, note: '1 顆約 58 大卡 / 2.6g 蛋白 (10 顆約 580 大卡 / 26g 蛋白)', icon: '🥟', popular: false, keywords: ['韭菜水餃', '水餃', '韭菜', '水餃子'] },
+      { id: 'dumpling_shrimp', name: '鮮蝦水餃 / 蝦仁水餃', category: 'noodles_dumplings', unitType: 'portion', defaultPortion: 10, unitName: '顆', proteinPerUnit: 3.2, caloriesPerUnit: 48, note: '1 顆約 48 大卡 / 3.2g 蛋白 (10 顆約 480 大卡 / 32g 蛋白，低脂高蛋白)', icon: '🥟', popular: true, keywords: ['鮮蝦水餃', '蝦仁水餃', '水餃', '蝦子', '水餃子'] },
+      { id: 'potsticker_pork', name: '招牌豬肉鍋貼 / 煎餃', category: 'noodles_dumplings', unitType: 'portion', defaultPortion: 10, unitName: '顆', proteinPerUnit: 2.8, caloriesPerUnit: 75, note: '底層煎油吸附，1 顆約 75 大卡 (10 顆高達 750 大卡 / 28g 蛋白)', icon: '🥟', popular: true, keywords: ['鍋貼', '煎餃', '八方雲集', '四海遊龍'] },
+      { id: 'noodle_soup', name: '陽春湯麵 / 清湯麵', category: 'noodles_dumplings', unitType: 'portion', defaultPortion: 1, unitName: '碗', proteinPerUnit: 9.0, caloriesPerUnit: 320, note: '熟麵一球約 200g，清淡湯底約 320 大卡 / 9g 蛋白 (低油主食選擇)', icon: '🍜', popular: true, keywords: ['陽春麵', '湯麵', '切仔麵', '麵條', '麵'] },
+      { id: 'noodle_beef', name: '紅燒牛肉麵 (含牛肉塊)', category: 'noodles_dumplings', unitType: 'portion', defaultPortion: 1, unitName: '碗', proteinPerUnit: 32.0, caloriesPerUnit: 650, note: '一碗含牛肉塊約 32g 蛋白 / 650 大卡 (熱量主要在牛油湯頭，少喝湯可少 150 卡)', icon: '🍜', popular: true, keywords: ['牛肉麵', '紅燒牛肉麵', '清燉牛肉麵', '牛肉', '麵'] },
+      { id: 'noodle_sesame', name: '麻醬乾拌麵 (中碗)', category: 'noodles_dumplings', unitType: 'portion', defaultPortion: 1, unitName: '碗', proteinPerUnit: 11.0, caloriesPerUnit: 520, note: '芝麻醬含大量油脂，一碗高達 520 大卡 / 11g 蛋白', icon: '🍜', popular: true, keywords: ['麻醬麵', '乾麵', '麻醬乾麵', '麻醬', '拌麵', '麵'] },
+      { id: 'noodle_zha_jiang', name: '台式炸醬麵 / 肉燥乾麵', category: 'noodles_dumplings', unitType: 'portion', defaultPortion: 1, unitName: '碗', proteinPerUnit: 14.0, caloriesPerUnit: 480, note: '絞肉炸醬一碗約 480 大卡 / 14g 蛋白', icon: '🍜', popular: false, keywords: ['炸醬麵', '肉燥麵', '乾麵', '麵'] },
+      { id: 'noodle_udon', name: '日式讚岐烏龍麵 (熟麵)', category: 'noodles_dumplings', unitType: 'portion', defaultPortion: 1, unitName: '碗(200g)', proteinPerUnit: 5.2, caloriesPerUnit: 210, note: '熟重 200g 約 210 大卡 / 5.2g 蛋白 (純碳水、飽足感高)', icon: '🍜', popular: false, keywords: ['烏龍麵', '讚岐烏龍', 'udon', '麵'] },
+      { id: 'pasta_oil', name: '清炒蒜香義大利麵', category: 'noodles_dumplings', unitType: 'portion', defaultPortion: 1, unitName: '盤', proteinPerUnit: 12.0, caloriesPerUnit: 380, note: '熟麵一盤約 380 大卡 / 12g 蛋白 (杜蘭小麥低GI優質碳水)', icon: '🍝', popular: false, keywords: ['義大利麵', 'pasta', '義麵', '麵'] },
+
       // 3. 健康青菜與蔬菜 (著重重量與超低熱量)
       { id: 'boiled_greens', name: '清燙青菜 (高麗菜/地瓜葉)', category: 'veggies', unitType: 'portion', defaultPortion: 1, defaultGram: 100, unitName: '碗(100g)', proteinPerUnit: 1.8, caloriesPerUnit: 30, note: '熟重一碗約 100g 清燙 ≈ 僅 30 大卡', icon: '🥬', popular: true, keywords: ['燙青菜', '青菜', '高麗菜', '地瓜葉', '空心菜'] },
       { id: 'stirfried_greens', name: '熱炒青菜 (含烹調油)', category: 'veggies', unitType: 'portion', defaultPortion: 1, defaultGram: 100, unitName: '碗(100g)', proteinPerUnit: 1.8, caloriesPerUnit: 70, note: '熟重一碗含家常炒油 ≈ 70 大卡', icon: '🥬', popular: true, keywords: ['炒青菜', '高麗菜', '炒菜'] },
@@ -485,7 +515,20 @@
       { id: 'mushrooms', name: '綜合菇類 (杏鮑菇/金針菇)', category: 'veggies', unitType: 'portion', defaultPortion: 1, defaultGram: 100, unitName: '碗(100g)', proteinPerUnit: 2.5, caloriesPerUnit: 30, note: '熟重一碗約 100g ≈ 30 大卡 (豐富膳食纖維)', icon: '🍄', popular: false, keywords: ['菇', '杏鮑菇', '金針菇', '香菇'] },
       { id: 'tomato_cucumber', name: '大番茄 / 小黃瓜', category: 'veggies', unitType: 'portion', defaultPortion: 1, defaultGram: 150, unitName: '份(150g)', proteinPerUnit: 1.2, caloriesPerUnit: 28, note: '大番茄 1 顆或小黃瓜 1 條 ≈ 28 大卡', icon: '🍅', popular: false, keywords: ['番茄', '小黃瓜', '大番茄', '黃瓜'] },
 
-      // 4. 原型肉類與海鮮 (高蛋白模範生)
+      // 5. 新鮮水果與高纖低GI果類 (每日 2-3 份健康拳頭大)
+      { id: 'guava', name: '珍珠芭樂 (高纖減脂王)', category: 'fruits', unitType: 'portion', defaultPortion: 1, unitName: '顆(中/200g)', proteinPerUnit: 2.2, caloriesPerUnit: 70, note: '維他命C冠軍、超低GI高纖維，1顆約 70 大卡 / 2.2g 蛋白 (減重首選！)', icon: '🍈', popular: true, keywords: ['芭樂', '珍珠芭樂', '番石榴', '水果'] },
+      { id: 'apple', name: '富士蘋果 (中型)', category: 'fruits', unitType: 'portion', defaultPortion: 1, unitName: '顆(150g)', proteinPerUnit: 0.4, caloriesPerUnit: 60, note: '國健署標準 1 份水果大小，含豐富果膠，約 60 大卡', icon: '🍎', popular: true, keywords: ['蘋果', '富士蘋果', 'apple', '水果'] },
+      { id: 'banana', name: '黃金香蕉 (運動補醣)', category: 'fruits', unitType: 'portion', defaultPortion: 1, unitName: '根(中/100g)', proteinPerUnit: 1.3, caloriesPerUnit: 90, note: '中型 1 根約 90 大卡 / 1.3g 蛋白，富含鉀與快慢碳，健身前後最佳補給', icon: '🍌', popular: true, keywords: ['香蕉', 'banana', '水果'] },
+      { id: 'kiwi', name: '奇異果 (綠肉/黃金)', category: 'fruits', unitType: 'portion', defaultPortion: 1, unitName: '顆(80g)', proteinPerUnit: 0.9, caloriesPerUnit: 45, note: '奇異果酵素助消化，1 顆約 45 大卡 (高纖低熱量)', icon: '🥝', popular: true, keywords: ['奇異果', '獼猴桃', 'kiwi', '水果'] },
+      { id: 'cherry_tomatoes', name: '聖女小番茄 (約15-20顆)', category: 'fruits', unitType: 'portion', defaultPortion: 1, unitName: '碗(150g)', proteinPerUnit: 1.8, caloriesPerUnit: 50, note: '標準一碗約 15-20 顆 ≈ 僅 50 大卡，茄紅素豐富、解饞無負擔', icon: '🍅', popular: true, keywords: ['小番茄', '聖女番茄', '番茄', '水果'] },
+      { id: 'orange_citrus', name: '台灣柳丁 / 蜜柑橘子', category: 'fruits', unitType: 'portion', defaultPortion: 1, unitName: '顆(中/150g)', proteinPerUnit: 1.0, caloriesPerUnit: 60, note: '1 顆中型柳丁約 60 大卡，維生素C豐富，建議直接連渣吃保留纖維', icon: '🍊', popular: false, keywords: ['柳丁', '橘子', '柑橘', '水果'] },
+      { id: 'dragonfruit', name: '紅肉/白肉火龍果', category: 'fruits', unitType: 'portion', defaultPortion: 1, unitName: '半顆/碗(150g)', proteinPerUnit: 1.5, caloriesPerUnit: 75, note: '半顆或一碗切塊約 75 大卡，含甜菜紅素與膳食纖維，幫助排便順暢', icon: '🌺', popular: false, keywords: ['火龍果', '紅龍果', '水果'] },
+      { id: 'grapes', name: '巨峰葡萄 (約10-12顆)', category: 'fruits', unitType: 'portion', defaultPortion: 1, unitName: '碗(100g)', proteinPerUnit: 0.6, caloriesPerUnit: 65, note: '約 10~12 顆一碗約 65 大卡，含花青素與白藜蘆醇', icon: '🍇', popular: false, keywords: ['葡萄', '巨峰葡萄', '水果'] },
+      { id: 'watermelon', name: '清涼紅肉西瓜 (切塊)', category: 'fruits', unitType: 'portion', defaultPortion: 1, unitName: '碗(200g)', proteinPerUnit: 1.2, caloriesPerUnit: 65, note: '一碗約 200g ≈ 65 大卡，水分超高 (GI值較高，建議適量享用)', icon: '🍉', popular: false, keywords: ['西瓜', '水果'] },
+      { id: 'papaya', name: '熟成木瓜 (切塊)', category: 'fruits', unitType: 'portion', defaultPortion: 1, unitName: '碗(150g)', proteinPerUnit: 0.8, caloriesPerUnit: 60, note: '一碗約 150g ≈ 60 大卡，富含木瓜酵素與維生素A', icon: '🍈', popular: false, keywords: ['木瓜', '水果'] },
+      { id: 'avocado', name: '酪梨 / 牛油果 (植物好油)', category: 'fruits', unitType: 'portion', defaultPortion: 1, unitName: '1/4顆(50g)', proteinPerUnit: 1.0, caloriesPerUnit: 80, note: '營養學上屬優質油脂類，1/4 顆約 80 大卡，單元不飽和脂肪酸極佳', icon: '🥑', popular: false, keywords: ['酪梨', '牛油果', 'avocado', '水果'] },
+
+      // 6. 原型肉類與海鮮 (高蛋白模範生)
       { id: 'chicken_breast_cvs', name: '超商舒肥雞胸肉', category: 'meat_fish', unitType: 'portion', defaultPortion: 1, defaultGram: 120, unitName: '包(120g)', proteinPerUnit: 28.0, caloriesPerUnit: 135, note: '即食舒肥包 ≈ 28g 蛋白 / 僅 135 大卡！', icon: '🍗', popular: true, keywords: ['雞胸', '舒肥', '雞胸肉'] },
       { id: 'chicken_palm', name: '現煎雞胸肉 / 雞里肌', category: 'meat_fish', unitType: 'palm', defaultPalm: 1.0, proteinPerUnit: 22.0, caloriesPerUnit: 140, note: '1 個掌心厚度 (100g熟重) ≈ 22g 蛋白 / 140 大卡', icon: '🥩', popular: true, keywords: ['雞肉', '雞里肌'] },
       { id: 'beef_steak', name: '牛腱肉 / 牛排', category: 'meat_fish', unitType: 'palm', defaultPalm: 1.0, proteinPerUnit: 24.0, caloriesPerUnit: 190, note: '1 個掌心大小 ≈ 24g 蛋白 / 190 大卡', icon: '🥩', popular: false, keywords: ['牛肉', '牛腱', '牛排'] },
@@ -659,8 +702,38 @@
 
       switchActiveUnit(food.unitType || 'portion');
       if (food.unitType === 'portion') {
-        document.getElementById('portionNumberInput').value = food.defaultPortion || 1;
+        const portionInput = document.getElementById('portionNumberInput');
+        const qContainer = document.getElementById('quickPortionButtons');
+        portionInput.value = food.defaultPortion || 1;
         document.getElementById('portionUnitLabel').textContent = food.unitName || '份';
+
+        const isDumpling = food.category === 'noodles_dumplings' && (food.id.startsWith('dumpling') || food.id.startsWith('potsticker'));
+        if (isDumpling) {
+          portionInput.step = '1';
+          portionInput.min = '1';
+          portionInput.max = '50';
+          if (qContainer) {
+            qContainer.innerHTML = `
+              <button type="button" onclick="setFastPortion(5)" class="px-2.5 py-0.5 rounded-lg border border-[var(--border)] hover:border-emerald-500">5 顆</button>
+              <button type="button" onclick="setFastPortion(8)" class="px-2.5 py-0.5 rounded-lg border border-[var(--border)] hover:border-emerald-500">8 顆</button>
+              <button type="button" onclick="setFastPortion(10)" class="px-2.5 py-0.5 rounded-lg border border-[var(--border)] hover:border-emerald-500 font-bold bg-emerald-50/50 dark:bg-emerald-950/30 border-emerald-500 text-emerald-700 dark:text-emerald-300">10 顆</button>
+              <button type="button" onclick="setFastPortion(15)" class="px-2.5 py-0.5 rounded-lg border border-[var(--border)] hover:border-emerald-500">15 顆</button>
+            `;
+          }
+        } else {
+          portionInput.step = '0.5';
+          portionInput.min = '0.5';
+          portionInput.max = '20';
+          const uLabel = food.unitName ? food.unitName.split('(')[0] : '份';
+          if (qContainer) {
+            qContainer.innerHTML = `
+              <button type="button" onclick="setFastPortion(0.5)" class="px-2.5 py-0.5 rounded-lg border border-[var(--border)] hover:border-emerald-500">0.5 ${uLabel}</button>
+              <button type="button" onclick="setFastPortion(1)" class="px-2.5 py-0.5 rounded-lg border border-[var(--border)] hover:border-emerald-500 font-bold bg-emerald-50/50 dark:bg-emerald-950/30 border-emerald-500 text-emerald-700 dark:text-emerald-300">1 ${uLabel}</button>
+              <button type="button" onclick="setFastPortion(1.5)" class="px-2.5 py-0.5 rounded-lg border border-[var(--border)] hover:border-emerald-500">1.5 ${uLabel}</button>
+              <button type="button" onclick="setFastPortion(2)" class="px-2.5 py-0.5 rounded-lg border border-[var(--border)] hover:border-emerald-500">2 ${uLabel}</button>
+            `;
+          }
+        }
       } else if (food.unitType === 'palm') {
         setPalmValue(food.defaultPalm || 1.0);
       } else if (food.unitType === 'gram') {
@@ -694,7 +767,9 @@
     // Stepper adjusters
     function adjustPortionValue(delta) {
       const input = document.getElementById('portionNumberInput');
-      let val = Math.max(0.5, (parseFloat(input.value) || 1) + delta);
+      const isDumpling = selectedFood && selectedFood.category === 'noodles_dumplings' && (selectedFood.id.startsWith('dumpling') || selectedFood.id.startsWith('potsticker'));
+      const step = isDumpling ? (delta > 0 ? 1 : -1) : delta;
+      let val = Math.max(isDumpling ? 1 : 0.5, (parseFloat(input.value) || 1) + step);
       input.value = val;
       recalcActiveEntry();
     }
