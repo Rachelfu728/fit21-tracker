@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fit21 ✕ 遇見喜樂營養俱樂部 | 每日蛋白質與熱量管理系統</title>
+  <title>遇見喜樂營養俱樂部 ✕ Fit21 | 每日蛋白質與熱量健康日記</title>
   <!-- App Icons & Mobile Home Screen PWA Support -->
   <link rel="icon" type="image/png" href="icon.png">
   <link rel="apple-touch-icon" href="icon.png">
@@ -11,7 +11,7 @@
   <meta name="theme-color" content="#10b981">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="Fit21健康管理">
+  <meta name="apple-mobile-web-app-title" content="遇見喜樂">
 
   <!-- Public Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -45,27 +45,32 @@
 <body class="bg-[var(--background)] text-[var(--foreground)] antialiased p-3 sm:p-6 min-h-screen">
   <div class="max-w-5xl mx-auto space-y-6">
 
-    <!-- Header Banner -->
-    <header class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4">
+    <!-- Header Banner: Warm, Joyful & Welcoming Club Style -->
+    <header class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 sm:p-6 shadow-sm space-y-4">
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <!-- Brand Badge -->
-          <div class="flex flex-wrap items-center gap-2 mb-2">
-            <span class="px-3 py-1 rounded-full text-xs font-black bg-gradient-to-r from-emerald-600 to-teal-600 text-white tracking-wider shadow-xs">
-              Fit21
-            </span>
-            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20">
-              🌿 遇見喜樂營養俱樂部 客戶服務
-            </span>
-            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[var(--sidebar)] text-[var(--muted-foreground)]">
-              雙軌追蹤版
-            </span>
-          </div>
+        
+        <div class="flex items-center gap-3.5 sm:gap-4">
+          <!-- Warm Club Avatar / Icon -->
+          <img src="icon.png" alt="遇見喜樂營養俱樂部" class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl shadow-sm border border-emerald-300/40 dark:border-emerald-700/50 shrink-0 bg-white object-cover">
+          
+          <div>
+            <div class="flex flex-wrap items-center gap-2 mb-1">
+              <span class="text-base sm:text-lg font-black text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5">
+                <span>🌿 遇見喜樂營養俱樂部</span>
+              </span>
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/30">
+                Fit21 活力學員專用
+              </span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-medium bg-[var(--sidebar)] text-[var(--muted-foreground)]">
+                雙軌追蹤版
+              </span>
+            </div>
 
-          <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--foreground)]">智慧每日蛋白質 ＆ 熱量管理系統</h1>
-          <p class="text-xs sm:text-sm text-[var(--muted-foreground)] mt-1">
-            協助俱樂部學員輕鬆掌握每日飲食！直覺換算手掌、公克、毫升與常見生活美食
-          </p>
+            <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-[var(--foreground)]">智慧每日蛋白質 ＆ 熱量管理日記</h1>
+            <p class="text-xs text-[var(--muted-foreground)] mt-0.5">
+              溫暖陪伴學員掌握飲食！輕鬆換算早晨奶昔、活力飲、日常美食與達標進度
+            </p>
+          </div>
         </div>
 
         <div class="flex flex-wrap items-center gap-2 self-start md:self-auto shrink-0">
@@ -88,47 +93,71 @@
       </div>
     </header>
 
-    <!-- Top Dashboard: Dual Targets (Protein + Calories) -->
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-
-      <!-- Left: User Profile & Target Calculation -->
-      <div class="md:col-span-4 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4">
-        <div class="flex items-center justify-between border-b border-[var(--border)] pb-3">
-          <h2 class="text-sm font-semibold flex items-center gap-2">
-            <span class="w-5 h-5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-bold">1</span>
-            個人目標試算
-          </h2>
-          <span class="text-[11px] text-[var(--muted-foreground)]">BMR/TDEE 連動</span>
+    <!-- Section 1: Collapsible User Profile & Target Settings -->
+    <div class="space-y-3">
+      
+      <!-- Collapsed Summary Bar (Default Clean State) -->
+      <div id="profileSummaryBar" class="flex flex-col sm:flex-row sm:items-center justify-between p-3.5 rounded-2xl bg-[var(--card)] border border-[var(--border)] shadow-xs gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-black text-sm shrink-0">
+            👤
+          </div>
+          <div class="text-xs">
+            <div class="flex items-center gap-2">
+              <span class="font-extrabold text-[var(--foreground)] text-sm">個人飲食目標已設定</span>
+              <span class="text-[10px] px-2 py-0.2 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-bold border border-emerald-500/30">鎖定運算中</span>
+            </div>
+            <p class="text-[11px] text-[var(--muted-foreground)] mt-0.5" id="profileSummaryDetails">
+              女性 · 35歲 · 65kg · 170cm (🔥 減脂塑形) ｜ 每日建議目標：104g 蛋白 / 1650 kcal
+            </p>
+          </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-2 text-xs">
+        <button type="button" onclick="toggleProfileCard(true)" class="self-start sm:self-auto px-3.5 py-1.5 rounded-xl border border-[var(--border)] hover:bg-[var(--sidebar)] text-xs font-bold text-[var(--foreground)] transition flex items-center gap-1.5 shadow-2xs">
+          <span>⚙️ 修改基本資料</span>
+        </button>
+      </div>
+
+      <!-- Expanded Edit Card (Opens on demand) -->
+      <div id="profileEditCard" class="hidden bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4 animate-in fade-in duration-200">
+        <div class="flex items-center justify-between border-b border-[var(--border)] pb-3">
+          <div>
+            <h2 class="text-sm font-bold flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-bold">1</span>
+              個人目標試算設定
+            </h2>
+            <p class="text-[11px] text-[var(--muted-foreground)] mt-0.5">修改年齡、身高、體重與目標，設定完成後點擊最下方收合按鈕即可隱藏</p>
+          </div>
+          <button type="button" onclick="toggleProfileCard(false)" class="text-xs text-[var(--muted-foreground)] hover:text-[var(--foreground)] font-bold flex items-center gap-1">
+            <span>收起 ▲</span>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
           <div>
             <label class="block text-[var(--muted-foreground)] mb-1">生理性別</label>
-            <select id="userGender" onchange="calculateTargets()" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-2.5 py-1.5 text-[var(--foreground)]">
+            <select id="userGender" onchange="calculateTargets()" class="w-full rounded-xl border border-[var(--border)] bg-[var(--background)] px-2.5 py-2 text-[var(--foreground)]">
               <option value="female">女性</option>
               <option value="male" selected>男性</option>
             </select>
           </div>
           <div>
             <label class="block text-[var(--muted-foreground)] mb-1">年齡 (歲)</label>
-            <input type="number" id="userAge" value="35" min="12" max="100" oninput="calculateTargets()" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-2.5 py-1.5 text-[var(--foreground)]">
+            <input type="number" id="userAge" value="35" min="12" max="100" oninput="calculateTargets()" class="w-full rounded-xl border border-[var(--border)] bg-[var(--background)] px-2.5 py-2 text-[var(--foreground)]">
           </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-2 text-xs">
           <div>
             <label class="block text-[var(--muted-foreground)] mb-1">體重 (kg)</label>
-            <input type="number" id="userWeight" value="65" min="30" max="200" step="0.5" oninput="calculateTargets()" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-2.5 py-1.5 text-[var(--foreground)]">
+            <input type="number" id="userWeight" value="65" min="30" max="200" step="0.5" oninput="calculateTargets()" class="w-full rounded-xl border border-[var(--border)] bg-[var(--background)] px-2.5 py-2 text-[var(--foreground)]">
           </div>
           <div>
             <label class="block text-[var(--muted-foreground)] mb-1">身高 (cm)</label>
-            <input type="number" id="userHeight" value="170" min="100" max="220" oninput="calculateTargets()" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-2.5 py-1.5 text-[var(--foreground)]">
+            <input type="number" id="userHeight" value="170" min="100" max="220" oninput="calculateTargets()" class="w-full rounded-xl border border-[var(--border)] bg-[var(--background)] px-2.5 py-2 text-[var(--foreground)]">
           </div>
         </div>
 
         <div class="text-xs">
           <label class="block text-[var(--muted-foreground)] mb-1">體態管理目標</label>
-          <select id="userGoal" onchange="calculateTargets()" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-2.5 py-1.5 text-[var(--foreground)]">
+          <select id="userGoal" onchange="calculateTargets()" class="w-full rounded-xl border border-[var(--border)] bg-[var(--background)] px-2.5 py-2 text-[var(--foreground)]">
             <option value="fat_loss" selected>🔥 減脂塑形 (熱量赤字 -350kcal, 蛋白1.6g/kg)</option>
             <option value="maintenance">⚖️ 健康維持 / 樂活 (平衡熱量, 蛋白1.2g/kg)</option>
             <option value="muscle_gain">💪 運動增肌 (輕微盈餘 +250kcal, 蛋白1.8g/kg)</option>
@@ -136,7 +165,7 @@
         </div>
 
         <!-- Calculated Target Box -->
-        <div class="p-3 rounded-xl bg-blue-50/50 dark:bg-blue-950/20 border border-blue-200/50 dark:border-blue-800/50 space-y-2 text-xs">
+        <div class="p-3.5 rounded-xl bg-blue-50/50 dark:bg-blue-950/20 border border-blue-200/50 dark:border-blue-800/50 space-y-2 text-xs">
           <div class="grid grid-cols-2 gap-2 border-b border-blue-200/40 dark:border-blue-800/40 pb-2">
             <div>
               <span class="text-[11px] text-[var(--muted-foreground)] block">每日蛋白質目標</span>
@@ -154,71 +183,77 @@
             <span>總消耗 TDEE: <strong id="tdeeDisplay" class="text-[var(--foreground)]">2000</strong> kcal</span>
           </div>
         </div>
+
+        <!-- Complete & Collapse Action Button -->
+        <button type="button" onclick="saveAndCollapseProfile()" class="w-full py-3 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold rounded-xl text-xs transition shadow-sm flex items-center justify-center gap-1.5">
+          <span>✅ 設定完成，收合此欄位（專注記錄今日飲食）</span>
+        </button>
       </div>
 
-      <!-- Right: Dual Progress Bars (Protein vs Calories) -->
-      <div class="md:col-span-8 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm flex flex-col justify-between space-y-4">
-        <div class="flex items-center justify-between">
-          <h2 class="text-base font-semibold flex items-center gap-2">
-            <span class="w-5 h-5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs font-bold">2</span>
-            今日雙軌儀表板 (蛋白質達標率 vs 熱量消耗)
-          </h2>
-          <button type="button" onclick="clearAllRecords()" class="text-xs px-2.5 py-1 rounded-xl border border-rose-300 dark:border-rose-800 bg-rose-50/70 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 hover:bg-rose-100 transition font-bold flex items-center gap-1 shadow-2xs">
-            <span>🗑️ 一鍵清空</span>
-          </button>
-        </div>
+    </div>
 
-        <div class="space-y-4">
-          <!-- 1. Protein Progress -->
-          <div class="space-y-1.5">
-            <div class="flex justify-between text-xs">
-              <span class="font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-                <span>🍗 蛋白質 (目標: 達成)</span>
-              </span>
-              <div class="space-x-2">
-                <span>已攝取: <strong id="currentIntake" class="text-[var(--foreground)]">0</strong> / <span id="targetProteinMini">104</span> g</span>
-                <span id="proteinPercentBadge" class="font-bold text-emerald-600 dark:text-emerald-400">0%</span>
-              </div>
-            </div>
-            <div class="w-full bg-[var(--sidebar)] rounded-full h-3.5 overflow-hidden border border-[var(--border)] p-0.5">
-              <div id="proteinProgressBar" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
+    <!-- Section 2: Dual Dashboard (Full width & Prominent) -->
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4">
+      <div class="flex items-center justify-between">
+        <h2 class="text-base font-bold flex items-center gap-2">
+          <span class="w-5 h-5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs font-bold">2</span>
+          今日雙軌儀表板 (蛋白質達標率 vs 熱量消耗)
+        </h2>
+        <button type="button" onclick="clearAllRecords()" class="text-xs px-2.5 py-1 rounded-xl border border-rose-300 dark:border-rose-800 bg-rose-50/70 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 hover:bg-rose-100 transition font-bold flex items-center gap-1 shadow-2xs">
+          <span>🗑️ 一鍵清空</span>
+        </button>
+      </div>
+
+      <div class="space-y-4">
+        <!-- 1. Protein Progress -->
+        <div class="space-y-1.5">
+          <div class="flex justify-between text-xs">
+            <span class="font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+              <span>🍗 蛋白質 (目標: 達成)</span>
+            </span>
+            <div class="space-x-2">
+              <span>已攝取: <strong id="currentIntake" class="text-[var(--foreground)]">0</strong> / <span id="targetProteinMini">104</span> g</span>
+              <span id="proteinPercentBadge" class="font-bold text-emerald-600 dark:text-emerald-400">0%</span>
             </div>
           </div>
-
-          <!-- 2. Calories Progress -->
-          <div class="space-y-1.5">
-            <div class="flex justify-between text-xs">
-              <span class="font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
-                <span>🔥 熱量預算 (目標: 不超標)</span>
-              </span>
-              <div class="space-x-2">
-                <span>已攝取: <strong id="currentCalorieIntake" class="text-[var(--foreground)]">0</strong> / <span id="targetCalorieMini">1650</span> kcal</span>
-                <span id="caloriePercentBadge" class="font-bold text-amber-600 dark:text-amber-400">0%</span>
-              </div>
-            </div>
-            <div class="w-full bg-[var(--sidebar)] rounded-full h-3.5 overflow-hidden border border-[var(--border)] p-0.5">
-              <div id="calorieProgressBar" class="bg-gradient-to-r from-amber-500 to-orange-500 h-full rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
-            </div>
+          <div class="w-full bg-[var(--sidebar)] rounded-full h-3.5 overflow-hidden border border-[var(--border)] p-0.5">
+            <div id="proteinProgressBar" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
           </div>
         </div>
 
-        <!-- Remaining Summary Grid -->
-        <div class="grid grid-cols-3 text-center text-xs pt-1 gap-2">
-          <div class="p-2 rounded-xl bg-[var(--sidebar)]">
-            <span class="text-[var(--muted-foreground)] block text-[11px]">蛋白質剩餘</span>
-            <span class="text-base font-bold text-emerald-600 dark:text-emerald-400" id="remainingProtein">104</span>
-            <span class="text-[10px] text-[var(--muted-foreground)]">g</span>
+        <!-- 2. Calories Progress -->
+        <div class="space-y-1.5">
+          <div class="flex justify-between text-xs">
+            <span class="font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
+              <span>🔥 熱量預算 (目標: 不超標)</span>
+            </span>
+            <div class="space-x-2">
+              <span>已攝取: <strong id="currentCalorieIntake" class="text-[var(--foreground)]">0</strong> / <span id="targetCalorieMini">1650</span> kcal</span>
+              <span id="caloriePercentBadge" class="font-bold text-amber-600 dark:text-amber-400">0%</span>
+            </div>
           </div>
-          <div class="p-2 rounded-xl bg-[var(--sidebar)]">
-            <span class="text-[var(--muted-foreground)] block text-[11px]">熱量額度剩餘</span>
-            <span class="text-base font-bold text-amber-600 dark:text-amber-400" id="remainingCalorie">1650</span>
-            <span class="text-[10px] text-[var(--muted-foreground)]">kcal</span>
+          <div class="w-full bg-[var(--sidebar)] rounded-full h-3.5 overflow-hidden border border-[var(--border)] p-0.5">
+            <div id="calorieProgressBar" class="bg-gradient-to-r from-amber-500 to-orange-500 h-full rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
           </div>
-          <div class="p-2 rounded-xl bg-[var(--sidebar)]">
-            <span class="text-[var(--muted-foreground)] block text-[11px]">蛋白等同還差</span>
-            <span class="text-xs font-bold text-blue-600 dark:text-blue-400" id="approxRemainingShakes">約 11 份奶昔</span>
-            <span class="text-[10px] text-[var(--muted-foreground)] block">(9g / 88kcal 份)</span>
-          </div>
+        </div>
+      </div>
+
+      <!-- Remaining Summary Grid -->
+      <div class="grid grid-cols-3 text-center text-xs pt-1 gap-2">
+        <div class="p-2 rounded-xl bg-[var(--sidebar)]">
+          <span class="text-[var(--muted-foreground)] block text-[11px]">蛋白質剩餘</span>
+          <span class="text-base font-bold text-emerald-600 dark:text-emerald-400" id="remainingProtein">104</span>
+          <span class="text-[10px] text-[var(--muted-foreground)]">g</span>
+        </div>
+        <div class="p-2 rounded-xl bg-[var(--sidebar)]">
+          <span class="text-[var(--muted-foreground)] block text-[11px]">熱量額度剩餘</span>
+          <span class="text-base font-bold text-amber-600 dark:text-amber-400" id="remainingCalorie">1650</span>
+          <span class="text-[10px] text-[var(--muted-foreground)]">kcal</span>
+        </div>
+        <div class="p-2 rounded-xl bg-[var(--sidebar)]">
+          <span class="text-[var(--muted-foreground)] block text-[11px]">蛋白等同還差</span>
+          <span class="text-xs font-bold text-blue-600 dark:text-blue-400" id="approxRemainingShakes">約 11 份純水 (或 6.5 份豆漿奶昔)</span>
+          <span class="text-[10px] text-[var(--muted-foreground)] block">(9g / 16.1g 份)</span>
         </div>
       </div>
     </div>
@@ -738,7 +773,40 @@
       document.getElementById('targetProteinMini').textContent = currentTargetProtein;
       document.getElementById('targetCalorieMini').textContent = currentTargetCalorie;
 
+      // Update Collapsed Summary Bar details
+      const genderText = gender === 'female' ? '女性' : '男性';
+      const goalNames = {
+        'fat_loss': '🔥 減脂塑形',
+        'maintenance': '⚖️ 健康維持',
+        'muscle_gain': '💪 運動增肌'
+      };
+      const summaryElem = document.getElementById('profileSummaryDetails');
+      if (summaryElem) {
+        summaryElem.textContent = `${genderText} · ${age}歲 · ${weight}kg · ${height}cm (${goalNames[goal] || '體態管理'}) ｜ 每日建議目標：${currentTargetProtein}g 蛋白 / ${currentTargetCalorie} kcal (基代: ${bmr} / TDEE: ${tdee})`;
+      }
+
       updateDashboard();
+    }
+
+    // Toggle Profile Card (Expand / Collapse)
+    function toggleProfileCard(expand) {
+      const summaryBar = document.getElementById('profileSummaryBar');
+      const editCard = document.getElementById('profileEditCard');
+      if (!summaryBar || !editCard) return;
+      if (expand) {
+        summaryBar.classList.add('hidden');
+        editCard.classList.remove('hidden');
+      } else {
+        editCard.classList.add('hidden');
+        summaryBar.classList.remove('hidden');
+      }
+    }
+
+    // Save and Collapse Profile Card
+    function saveAndCollapseProfile() {
+      calculateTargets();
+      toggleProfileCard(false);
+      showToast('✅ 基本資料已更新並自動收合！');
     }
 
     // 2. Render Food Grid
