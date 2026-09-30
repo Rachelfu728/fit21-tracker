@@ -184,13 +184,17 @@
           </div>
         </div>
 
-        <div class="text-xs">
-          <label class="block text-[var(--muted-foreground)] mb-1">體態管理目標</label>
+        <div class="text-xs space-y-1">
+          <label class="block text-[var(--muted-foreground)]">體態管理目標</label>
           <select id="userGoal" onchange="calculateTargets()" class="w-full rounded-xl border border-[var(--border)] bg-[var(--background)] px-2.5 py-2 text-[var(--foreground)]">
-            <option value="fat_loss" selected>🔥 減脂塑形 (熱量赤字 -350kcal, 蛋白1.6g/kg)</option>
+            <option value="fat_loss" selected>🔥 積極減脂塑形 (熱量赤字 -350kcal, 蛋白1.6g/kg)</option>
+            <option value="fat_loss_mild">🌱 溫和減脂入門 (熱量赤字 -250kcal, 蛋白1.4g/kg)</option>
             <option value="maintenance">⚖️ 健康維持 / 樂活 (平衡熱量, 蛋白1.2g/kg)</option>
-            <option value="muscle_gain">💪 運動增肌 (輕微盈餘 +250kcal, 蛋白1.8g/kg)</option>
+            <option value="muscle_gain">💪 運動增肌強體 (輕微盈餘 +250kcal, 蛋白1.8g/kg)</option>
           </select>
+          <p class="text-[11px] text-[var(--muted-foreground)] leading-relaxed">
+            💡 <strong>係數小百科：</strong>減脂熱量赤字時，國際運動營養學會 (ISSN) 建議 1.4~1.6g/kg 以保護肌肉不流失並維持基礎代謝；剛開始者可選「溫和減脂 (1.4g)」循序漸進喔！
+          </p>
         </div>
 
         <!-- Calculated Target Box -->
@@ -960,6 +964,9 @@
       if (goal === 'fat_loss') {
         proteinMultiplier = 1.6;
         calorieTarget = Math.max(1200, tdee - 350);
+      } else if (goal === 'fat_loss_mild') {
+        proteinMultiplier = 1.4;
+        calorieTarget = Math.max(1200, tdee - 250);
       } else if (goal === 'maintenance') {
         proteinMultiplier = 1.2;
         calorieTarget = tdee;
@@ -979,7 +986,8 @@
       // Update Collapsed Summary Bar details
       const genderText = gender === 'female' ? '女性' : '男性';
       const goalNames = {
-        'fat_loss': '🔥 減脂塑形',
+        'fat_loss': '🔥 積極減脂塑形',
+        'fat_loss_mild': '🌱 溫和減脂入門',
         'maintenance': '⚖️ 健康維持',
         'muscle_gain': '💪 運動增肌'
       };
