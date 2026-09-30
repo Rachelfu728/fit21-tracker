@@ -256,6 +256,14 @@
           <span class="text-[10px] text-[var(--muted-foreground)] block">(9g / 16.1g 份)</span>
         </div>
       </div>
+
+      <!-- Cooking Oil Disclaimer Note in Dashboard -->
+      <div class="mt-2.5 p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-[11px] text-amber-800 dark:text-amber-300 flex items-start gap-2">
+        <span class="text-sm shrink-0 mt-0.5">🍳</span>
+        <p class="leading-relaxed">
+          <strong class="font-bold">烹調油脂貼心備註：</strong>此處統計之總熱量<strong>未包含每日烹調時所使用之食用油脂</strong>（如炒菜油、煎炸油等），日常自煮或外食時請自行斟酌注意油脂熱量喔！
+        </p>
+      </div>
     </div>
 
     <!-- Main Section: Common Foods Picker & History Dashboard -->
@@ -291,6 +299,12 @@
             </button>
             <button onclick="openQuickLogModal('shake_soymilk')" class="px-2.5 py-1 rounded-lg border border-teal-300 dark:border-teal-700 bg-white dark:bg-[var(--card)] hover:border-teal-500 transition font-bold text-teal-800 dark:text-teal-300 flex items-center gap-1">
               <span>🥤 奶昔+豆漿 (16.1g/156k)</span>
+            </button>
+            <button onclick="openQuickLogModal('shake_oat_cup')" class="px-2.5 py-1 rounded-lg border border-amber-300 dark:border-amber-700 bg-white dark:bg-[var(--card)] hover:border-amber-500 transition font-bold text-amber-800 dark:text-amber-300 flex items-center gap-1">
+              <span>🥣 特調燕麥杯 (19g/256k)</span>
+            </button>
+            <button onclick="openQuickLogModal('ppp_protein')" class="px-2.5 py-1 rounded-lg border border-purple-300 dark:border-purple-700 bg-white dark:bg-[var(--card)] hover:border-purple-500 transition font-bold text-purple-800 dark:text-purple-300 flex items-center gap-1">
+              <span>🥄 優蛋 (1-3份)</span>
             </button>
             <button onclick="openQuickLogModal('energy_a')" class="px-2.5 py-1 rounded-lg border border-amber-300 dark:border-amber-700 bg-white dark:bg-[var(--card)] hover:border-amber-500 transition font-bold text-amber-800 dark:text-amber-300 flex items-center gap-1">
               <span>⚡ 活力A (42k)</span>
@@ -354,7 +368,7 @@
             <span class="text-[10px] bg-emerald-600 text-white px-2 py-0.5 rounded-full font-bold">早晨特調</span>
           </div>
           <p class="text-[var(--foreground)] leading-relaxed">
-            請先點選下方<strong>營養奶昔</strong>或<strong>活力飲品</strong>，選擇數量後直接加入今日早餐！完成後可點選上方「🥬 蔬菜」、「🥟 水餃/麵食」、「🍎 水果」等分類標籤，繼續記錄全日三餐！
+            請先點選下方<strong>營養奶昔</strong>、<strong>特調燕麥杯</strong>、<strong>優蛋(1~3份)</strong>或<strong>活力飲品</strong>，選擇數量後直接加入今日早餐！完成後可點選上方「🥬 蔬菜」、「🥟 水餃/麵食」、「🍎 水果」等分類標籤，繼續記錄全日三餐！
           </p>
         </div>
 
@@ -477,8 +491,11 @@
       </div>
     </footer>
 
-    <!-- Legal Footnote -->
-    <div class="text-center text-[11px] text-[var(--muted-foreground)] pb-4 space-y-1">
+    <!-- Legal Footnote & Final Disclaimer -->
+    <div class="text-center text-[11px] text-[var(--muted-foreground)] pb-6 space-y-2.5">
+      <div class="inline-block p-3 rounded-2xl bg-amber-500/10 border border-amber-500/25 text-amber-800 dark:text-amber-300 text-xs font-medium max-w-xl mx-auto text-left sm:text-center leading-relaxed">
+        🍳 <strong>最後備註提醒：</strong>本系統各項食物統計之總熱量<strong>「未包含每日烹調時所使用之食用油脂」</strong>（例如炒菜油、煎炸油或肉汁淋油），實際日常飲食控制時請自行斟酌留意油脂攝取！
+      </div>
       <p>Fit21 ✕ 遇見喜樂營養俱樂部 客戶服務專用自主管理工具</p>
       <p class="text-[10px] opacity-80">本系統依據衛福部國健署飲食參考原則建置，數據僅供個人自主健康管理參考，非屬醫療診斷處方。</p>
     </div>
@@ -534,6 +551,9 @@
         <!-- Quick chips -->
         <div id="modalQuickChips" class="flex flex-wrap justify-center gap-1.5 text-xs">
           <!-- Dynamically populated -->
+        </div>
+        <!-- Modal extra note / coach tip -->
+        <div id="modalExtraNote" class="hidden text-[11px] p-2.5 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-900 dark:text-purple-200 leading-snug">
         </div>
       </div>
 
@@ -601,6 +621,36 @@
         icon: '🥤', 
         popular: true, 
         keywords: ['奶昔豆漿', '豆漿奶昔', '無糖豆漿', '奶昔加豆漿', 'shake'] 
+      },
+      { 
+        id: 'shake_oat_cup', 
+        name: '特調燕麥杯 (奶昔+豆漿+燕麥+水果)', 
+        category: 'club_specials', 
+        unitType: 'portion', 
+        defaultPortion: 1, 
+        unitName: '杯', 
+        proteinPerUnit: 19.0, 
+        caloriesPerUnit: 256, 
+        hideProtein: false, 
+        note: '奶昔+200cc豆漿+20g燕麥+25k水果，高纖飽足 19.0g 蛋白 / 256 大卡', 
+        icon: '🥣', 
+        popular: true, 
+        keywords: ['燕麥杯', '隔夜燕麥', '奶昔燕麥', '燕麥奶昔', '燕麥', '賀寶芙', 'oats'] 
+      },
+      { 
+        id: 'ppp_protein', 
+        name: '優質蛋白粉 (優蛋 PPP)', 
+        category: 'club_specials', 
+        unitType: 'portion', 
+        defaultPortion: 1, 
+        unitName: '份', 
+        proteinPerUnit: 5.0, 
+        caloriesPerUnit: 22, 
+        hideProtein: false, 
+        note: '瓶身標示：每份 5g 蛋白 / 22 大卡（備註：若用奶昔大匙，1匙約等同2份=10g蛋白/44大卡）', 
+        icon: '🥄', 
+        popular: true, 
+        keywords: ['優蛋', '優質蛋白粉', 'ppp', '賀寶芙優蛋', '奶昔匙', '蛋白粉', '蛋白質粉', '份'] 
       },
       { 
         id: 'energy_a', 
@@ -847,6 +897,10 @@
           badgeTag = '<span class="px-1.5 py-0.2 rounded text-[10px] bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 font-bold">純水 9g/88k</span>';
         } else if (isShakeSoy) {
           badgeTag = '<span class="px-1.5 py-0.2 rounded text-[10px] bg-teal-500/20 text-teal-700 dark:text-teal-300 font-bold">+無糖豆漿 16.1g/156k</span>';
+        } else if (item.id === 'shake_oat_cup') {
+          badgeTag = '<span class="px-1.5 py-0.2 rounded text-[10px] bg-amber-500/20 text-amber-700 dark:text-amber-300 font-bold">高纖飽足 19g/256k</span>';
+        } else if (item.id === 'ppp_protein') {
+          badgeTag = '<span class="px-1.5 py-0.2 rounded text-[10px] bg-purple-500/20 text-purple-700 dark:text-purple-300 font-bold">1份 5g/22k (奶昔匙1匙≈2份)</span>';
         } else if (item.id === 'energy_a') {
           badgeTag = '<span class="px-1.5 py-0.2 rounded text-[10px] bg-amber-500/20 text-amber-700 dark:text-amber-300 font-bold">42 大卡</span>';
         } else if (item.id === 'energy_bb') {
@@ -966,6 +1020,7 @@
 
       // Quantity setup
       const isDumpling = food.category === 'noodles_dumplings' && (food.id.startsWith('dumpling') || food.id.startsWith('potsticker'));
+      const isPPP = food.id === 'ppp_protein';
       const qtyInput = document.getElementById('modalQtyInput');
       const chipsContainer = document.getElementById('modalQuickChips');
 
@@ -974,10 +1029,20 @@
         qtyInput.step = '1';
         qtyInput.min = '1';
         chipsContainer.innerHTML = `
-          <button type="button" onclick="setModalFastQty(5)" class="px-3 py-1 rounded-xl border border-[var(--border)] hover:border-emerald-500 font-medium">5 顆</button>
-          <button type="button" onclick="setModalFastQty(8)" class="px-3 py-1 rounded-xl border border-[var(--border)] hover:border-emerald-500 font-medium">8 顆</button>
-          <button type="button" onclick="setModalFastQty(10)" class="px-3 py-1 rounded-xl border border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-bold">10 顆</button>
-          <button type="button" onclick="setModalFastQty(15)" class="px-3 py-1 rounded-xl border border-[var(--border)] hover:border-emerald-500 font-medium">15 顆</button>
+          <button type="button" onclick="setModalFastQty(5, this)" class="px-3 py-1 rounded-xl border border-[var(--border)] hover:border-emerald-500 font-medium">5 顆</button>
+          <button type="button" onclick="setModalFastQty(8, this)" class="px-3 py-1 rounded-xl border border-[var(--border)] hover:border-emerald-500 font-medium">8 顆</button>
+          <button type="button" onclick="setModalFastQty(10, this)" class="px-3 py-1 rounded-xl border border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-bold">10 顆</button>
+          <button type="button" onclick="setModalFastQty(15, this)" class="px-3 py-1 rounded-xl border border-[var(--border)] hover:border-emerald-500 font-medium">15 顆</button>
+        `;
+      } else if (isPPP) {
+        qtyInput.value = 1;
+        qtyInput.step = '1';
+        qtyInput.min = '0.5';
+        chipsContainer.innerHTML = `
+          <button type="button" onclick="setModalFastQty(1, this)" class="px-2.5 py-1.5 rounded-xl border border-purple-500 bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300 font-bold">1 份 (+5g/22k)</button>
+          <button type="button" onclick="setModalFastQty(2, this)" class="px-2.5 py-1.5 rounded-xl border border-[var(--border)] hover:border-purple-500 font-medium">2 份 / 奶昔匙1匙 (+10g/44k)</button>
+          <button type="button" onclick="setModalFastQty(3, this)" class="px-2.5 py-1.5 rounded-xl border border-[var(--border)] hover:border-purple-500 font-medium">3 份 (+15g/66k)</button>
+          <button type="button" onclick="setModalFastQty(4, this)" class="px-2.5 py-1.5 rounded-xl border border-[var(--border)] hover:border-purple-500 font-medium">4 份 / 奶昔匙2匙 (+20g/88k)</button>
         `;
       } else {
         qtyInput.value = food.defaultPortion || 1;
@@ -985,11 +1050,23 @@
         qtyInput.min = '0.5';
         const uLabel = food.unitName ? food.unitName.split('(')[0] : '份';
         chipsContainer.innerHTML = `
-          <button type="button" onclick="setModalFastQty(0.5)" class="px-3 py-1 rounded-xl border border-[var(--border)] hover:border-emerald-500 font-medium">0.5 ${uLabel}</button>
-          <button type="button" onclick="setModalFastQty(1)" class="px-3 py-1 rounded-xl border border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-bold">1 ${uLabel}</button>
-          <button type="button" onclick="setModalFastQty(1.5)" class="px-3 py-1 rounded-xl border border-[var(--border)] hover:border-emerald-500 font-medium">1.5 ${uLabel}</button>
-          <button type="button" onclick="setModalFastQty(2)" class="px-3 py-1 rounded-xl border border-[var(--border)] hover:border-emerald-500 font-medium">2 ${uLabel}</button>
+          <button type="button" onclick="setModalFastQty(0.5, this)" class="px-3 py-1 rounded-xl border border-[var(--border)] hover:border-emerald-500 font-medium">0.5 ${uLabel}</button>
+          <button type="button" onclick="setModalFastQty(1, this)" class="px-3 py-1 rounded-xl border border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-bold">1 ${uLabel}</button>
+          <button type="button" onclick="setModalFastQty(1.5, this)" class="px-3 py-1 rounded-xl border border-[var(--border)] hover:border-emerald-500 font-medium">1.5 ${uLabel}</button>
+          <button type="button" onclick="setModalFastQty(2, this)" class="px-3 py-1 rounded-xl border border-[var(--border)] hover:border-emerald-500 font-medium">2 ${uLabel}</button>
         `;
+      }
+
+      // Display extra note for special items
+      const extraNote = document.getElementById('modalExtraNote');
+      if (extraNote) {
+        if (isPPP) {
+          extraNote.innerHTML = '💡 <strong>瓶身標示份量備註：</strong>優蛋瓶身每 1 份＝5g 蛋白質 / 22 大卡。<br>🥄 若使用<strong>「奶昔大匙」1 匙約等同 2 份（即 10 克蛋白質 / 44 大卡）</strong>喔！';
+          extraNote.classList.remove('hidden');
+        } else {
+          extraNote.classList.add('hidden');
+          extraNote.innerHTML = '';
+        }
       }
 
       recalcModal();
@@ -1018,14 +1095,27 @@
       if (!modalActiveFood) return;
       const input = document.getElementById('modalQtyInput');
       const isDumpling = modalActiveFood.category === 'noodles_dumplings' && (modalActiveFood.id.startsWith('dumpling') || modalActiveFood.id.startsWith('potsticker'));
-      const step = isDumpling ? (delta > 0 ? 1 : -1) : (delta > 0 ? 0.5 : -0.5);
-      let val = Math.max(isDumpling ? 1 : 0.5, (parseFloat(input.value) || 1) + step);
+      const isPPP = modalActiveFood.id === 'ppp_protein';
+      const step = (isDumpling || isPPP) ? (delta > 0 ? 1 : -1) : (delta > 0 ? 0.5 : -0.5);
+      const minVal = isDumpling ? 1 : 0.5;
+      let val = Math.max(minVal, (parseFloat(input.value) || 1) + step);
       input.value = val;
       recalcModal();
     }
 
-    function setModalFastQty(val) {
+    function setModalFastQty(val, btn = null) {
       document.getElementById('modalQtyInput').value = val;
+      if (btn && btn.parentElement) {
+        const isPurple = modalActiveFood && modalActiveFood.id === 'ppp_protein';
+        btn.parentElement.querySelectorAll('button').forEach(b => {
+          b.className = 'px-3 py-1 rounded-xl border border-[var(--border)] hover:border-emerald-500 font-medium transition';
+        });
+        if (isPurple) {
+          btn.className = 'px-3 py-1.5 rounded-xl border border-purple-500 bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300 font-bold transition';
+        } else {
+          btn.className = 'px-3 py-1 rounded-xl border border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-bold transition';
+        }
+      }
       recalcModal();
     }
 
