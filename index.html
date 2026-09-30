@@ -103,13 +103,22 @@
         </div>
       </div>
 
-      <!-- Professional Disclaimer Notice Banner -->
-      <div class="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-900 dark:text-amber-200 flex items-start gap-2.5 leading-relaxed">
-        <span class="text-base shrink-0 mt-0.5">⚠️</span>
-        <div>
-          <span class="font-bold">【貼心提醒】</span>
-          本工具提供之蛋白質與熱量換算數據<strong>僅供日常自主飲食管理評估與參考</strong>，計算基礎係依據衛生福利部國民健康署之「國人膳食營養素參考指引 (DRIs)」。食物實際之蛋白質與卡路里數值，仍會因<strong>完整重量、確切品牌及烹調方式（如生熟重、油煎炸裹粉、醬料調味等）</strong>而有所增減；<strong>特殊疾病或病態飲食請遵照專業醫師與專職營養師指導</strong>。
+      <!-- Prominent Medical & Health Disclaimer Banner -->
+      <div class="p-3.5 sm:p-4 rounded-2xl bg-amber-500/10 border border-amber-500/25 text-xs text-amber-950 dark:text-amber-200 space-y-1.5 leading-relaxed">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <span class="font-extrabold flex items-center gap-1.5 text-amber-900 dark:text-amber-300">
+            <span>🛡️ 重要免責聲明與使用須知</span>
+          </span>
+          <button type="button" onclick="openLegalModal()" class="text-[11px] underline font-bold hover:text-amber-800 dark:hover:text-amber-100 transition flex items-center gap-0.5">
+            <span>📜 隱私權政策與完整法律聲明 ➔</span>
+          </button>
         </div>
+        <p class="font-bold text-amber-900 dark:text-amber-200">
+          ⚠️ 本工具僅供健康管理參考，不替代專業醫療建議。如有健康問題請諮詢專業醫師或營養師。
+        </p>
+        <p class="text-[11px] text-amber-800/90 dark:text-amber-300/80">
+          本系統僅提供日常自主飲食之「追蹤」、「記錄」與「管理」，非屬醫療器材或診療處方軟體；食物營養數據依據衛福部國健署公開指引，計算結果僅供個人參考。
+        </p>
       </div>
     </header>
 
@@ -471,7 +480,7 @@
           <ul class="space-y-2 text-[var(--foreground)] leading-relaxed">
             <li class="flex items-start gap-1.5">
               <span class="text-emerald-600 dark:text-emerald-400 font-bold shrink-0">1.</span>
-              <span><strong>早晨高蛋白低卡啟動：</strong>經典純水奶昔 (9g/88k) 或加無糖豆漿 (16.1g/156k)，搭配活力飲代謝茶，喚醒一天活力！</span>
+              <span><strong>早晨高蛋白低卡啟動：</strong>經典純水奶昔 (9g/88k) 或加無糖豆漿 (16.1g/156k)，搭配活力飲品補充水分，開啟健康活力的一天！</span>
             </li>
             <li class="flex items-start gap-1.5">
               <span class="text-emerald-600 dark:text-emerald-400 font-bold shrink-0">2.</span>
@@ -479,7 +488,7 @@
             </li>
             <li class="flex items-start gap-1.5">
               <span class="text-emerald-600 dark:text-emerald-400 font-bold shrink-0">3.</span>
-              <span><strong>補足水分代謝加倍：</strong>建議每日喝足 體重(kg) × 40~50 cc 水分，排脂排汗更加分！</span>
+              <span><strong>補足日常充足水分：</strong>建議每日飲用 體重(kg) × 40~50 cc 純水，維持良好生理機能與健康代謝！</span>
             </li>
           </ul>
         </div>
@@ -511,13 +520,45 @@
       </div>
     </footer>
 
-    <!-- Legal Footnote & Final Disclaimer -->
-    <div class="text-center text-[11px] text-[var(--muted-foreground)] pb-6 space-y-2.5">
-      <div class="inline-block p-3 rounded-2xl bg-amber-500/10 border border-amber-500/25 text-amber-800 dark:text-amber-300 text-xs font-medium max-w-xl mx-auto text-left sm:text-center leading-relaxed">
+    <!-- Legal Footnote, Disclaimers & Privacy Notice -->
+    <div class="space-y-3 pb-8">
+      
+      <!-- Cooking Oil Disclaimer Note -->
+      <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/25 text-amber-900 dark:text-amber-200 text-xs font-medium max-w-2xl mx-auto text-left sm:text-center leading-relaxed">
         🍳 <strong>最後備註提醒：</strong>本系統各項食物統計之總熱量<strong>「未包含每日烹調時所使用之食用油脂」</strong>（例如炒菜油、煎炸油或肉汁淋油），實際日常飲食控制時請自行斟酌留意油脂攝取！
       </div>
-      <p>Fit21 ✕ 遇見喜樂營養俱樂部 客戶服務專用自主管理工具</p>
-      <p class="text-[10px] opacity-80">本系統依據衛福部國健署飲食參考原則建置，數據僅供個人自主健康管理參考，非屬醫療診斷處方。</p>
+
+      <!-- Compliance, Medical & Privacy Policy Card -->
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 max-w-3xl mx-auto text-xs space-y-3 text-[var(--muted-foreground)]">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[var(--border)] pb-2.5">
+          <span class="font-extrabold text-[var(--foreground)] text-sm flex items-center gap-1.5">
+            <span>🛡️ 服務免責聲明與隱私權保護規範</span>
+          </span>
+          <button type="button" onclick="openLegalModal()" class="text-xs px-3 py-1.5 rounded-xl border border-emerald-500/40 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-bold hover:bg-emerald-100 transition self-start sm:self-auto">
+            📋 閱讀完整條款細則 ➔
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 leading-relaxed text-[11px]">
+          <div class="space-y-1">
+            <span class="font-bold text-[var(--foreground)] block">🩺 醫療與健康免責聲明</span>
+            <p>本工具僅供健康管理參考，不替代專業醫療建議。如有健康問題或特殊疾病飲食照護需求，請諮詢專業醫師或營養師。</p>
+          </div>
+          <div class="space-y-1">
+            <span class="font-bold text-[var(--foreground)] block">🔒 個人資料保護法合規</span>
+            <p>純前端單機運作，數據僅保留於個人手機/電腦瀏覽器，不蒐集、不上傳、不向第三方傳輸任何個人身分資料。</p>
+          </div>
+          <div class="space-y-1">
+            <span class="font-bold text-[var(--foreground)] block">⚖️ 商業用途與法規諮詢</span>
+            <p>系統非屬醫療器材或處方軟體。若涉及商業用途或行銷推廣，請諮詢法律顧問並遵循衛福部食藥署 (TFDA) 相關法規。</p>
+          </div>
+        </div>
+
+        <div class="pt-2 text-center text-[10px] opacity-75 border-t border-[var(--border)]">
+          Fit21 ✕ 遇見喜樂營養俱樂部 客戶服務專用自主健康管理工具 ｜ 依據衛福部國健署飲食參考原則建置，非屬醫療診斷處方
+        </div>
+      </div>
+
     </div>
 
   </div>
@@ -603,6 +644,98 @@
     </div>
   </div>
 
+  <!-- Legal & Privacy Policy Modal (Comprehensive Disclaimer, Privacy Policy, Terms) -->
+  <div id="legalModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/60 backdrop-blur-xs transition-opacity p-3 sm:p-4">
+    <!-- Click backdrop to close -->
+    <div class="fixed inset-0" onclick="closeLegalModal()"></div>
+    
+    <div class="relative w-full max-w-2xl bg-[var(--card)] border border-[var(--border)] rounded-3xl shadow-2xl p-5 sm:p-6 space-y-4 max-h-[90vh] overflow-y-auto z-10 animate-in fade-in duration-200 text-xs text-[var(--foreground)]">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between border-b border-[var(--border)] pb-3">
+        <div class="flex items-center gap-2.5">
+          <span class="text-2xl">⚖️</span>
+          <div>
+            <h3 class="text-base font-extrabold text-[var(--foreground)]">免責聲明、隱私權政策與法規說明書</h3>
+            <p class="text-[11px] text-[var(--muted-foreground)]">Fit21 ✕ 遇見喜樂營養俱樂部 自主管理工具</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeLegalModal()" class="w-8 h-8 rounded-full bg-[var(--sidebar)] hover:bg-[var(--border)] flex items-center justify-center text-sm font-bold text-[var(--muted-foreground)] shrink-0 transition">✕</button>
+      </div>
+
+      <!-- Articles Content -->
+      <div class="space-y-4 leading-relaxed pr-1">
+        
+        <!-- Article 1: Medical & Health Disclaimer -->
+        <div class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/25 space-y-2">
+          <h4 class="font-extrabold text-amber-900 dark:text-amber-300 text-sm flex items-center gap-1.5">
+            <span>🩺 第一條：醫療與健康免責聲明（重要必讀）</span>
+          </h4>
+          <p class="text-amber-950 dark:text-amber-200 font-bold text-xs">
+            「本工具僅供健康管理參考，不替代專業醫療建議。如有健康問題請諮詢專業醫師或營養師。」
+          </p>
+          <ul class="list-disc list-inside space-y-1.5 text-amber-900/90 dark:text-amber-200/80 text-[11px]">
+            <li>本工具旨在協助個人或俱樂部學員記錄日常飲食、追蹤蛋白質與粗估熱量，<strong>非屬醫療器材，亦不具備任何疾病診斷、治療、緩解或預防之功能</strong>。</li>
+            <li>若您患有特殊疾病（如糖尿病、慢性腎臟病、痛風、心血管疾病等）、有特殊生理情況（如懷孕、哺乳）或正在接受醫師治療，請切勿擅自依本工具數值調整飲食或藥物，<strong>務必諮詢專業主治醫師或合格專職營養師之處方指導</strong>。</li>
+          </ul>
+        </div>
+
+        <!-- Article 2: Privacy Policy & Personal Data Protection Act -->
+        <div class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/25 space-y-2">
+          <h4 class="font-extrabold text-emerald-900 dark:text-emerald-300 text-sm flex items-center gap-1.5">
+            <span>🔒 第二條：個人資料保護法合規與隱私權政策</span>
+          </h4>
+          <p class="text-emerald-950 dark:text-emerald-200 font-semibold">
+            本工具高度重視個人隱私，並完全遵循中華民國《個人資料保護法》之規範與隱私安全設計原則（Privacy by Design）：
+          </p>
+          <ul class="list-disc list-inside space-y-1.5 text-[11px] text-[var(--muted-foreground)]">
+            <li><strong>純本機端運作（Client-Side Only）：</strong>您在系統中所輸入之個人生理數值（年齡、性別、身高、體重、飲食目標）以及每日點選之飲食明細，<strong>僅暫存於您個人手機或電腦瀏覽器的記憶體中</strong>。</li>
+            <li><strong>不蒐集、不上傳、不共享：</strong>本系統無後端伺服器資料庫，<strong>絕不蒐集、追蹤、儲存或向任何第三方傳輸或販售</strong>您的姓名、電話、IP、身分證字號或任何可識別個人之資料。</li>
+            <li><strong>資料自主控制權：</strong>使用者隨時可點選介面上的「一鍵清空記錄」或關閉瀏覽器，即可完全刪除裝置暫存之所有記錄。</li>
+          </ul>
+        </div>
+
+        <!-- Article 3: Terminology and Non-Therapeutic Scope -->
+        <div class="p-4 rounded-2xl bg-blue-500/10 border border-blue-500/25 space-y-2">
+          <h4 class="font-extrabold text-blue-900 dark:text-blue-300 text-sm flex items-center gap-1.5">
+            <span>📝 第三條：用詞規範與中性生活科學定義</span>
+          </h4>
+          <p class="text-[11px] text-[var(--muted-foreground)] leading-relaxed">
+            本系統嚴格遵循法規要求，全面<strong>避免使用「治療」、「療效」、「改善疾病」、「預防病症」等醫療相關字眼</strong>。系統介面全面採用「記錄」、「追蹤」、「自主管理」、「水分補充」等中性生活科學詞彙，旨在引導建立健康生活型態。
+          </p>
+        </div>
+
+        <!-- Article 4: Commercial Usage & TFDA Regulatory Guidance -->
+        <div class="p-4 rounded-2xl bg-purple-500/10 border border-purple-500/25 space-y-2">
+          <h4 class="font-extrabold text-purple-900 dark:text-purple-300 text-sm flex items-center gap-1.5">
+            <span>⚖️ 第四條：商業用途與主管機關（TFDA）法規諮詢建議</span>
+          </h4>
+          <ul class="list-disc list-inside space-y-1.5 text-[11px] text-[var(--muted-foreground)] leading-relaxed">
+            <li>若個人、營業主體、健康俱樂部或社群將本工具用於商業推廣、客戶服務或大量用戶推播，<strong>強烈建議向合格法律專業人士諮詢確認</strong>。</li>
+            <li>商業經營者於推廣或對外分享本工具時，須恪遵衛生福利部食品藥物管理署（TFDA）《食品安全衛生管理法》第二十八條（不得有不實、誇張或易生誤解之情形；亦不得為醫療效能之宣傳）、《醫療法》及相關法規規定，避免於銷售口語或宣傳中誇大宣稱效能。</li>
+          </ul>
+        </div>
+
+        <!-- Article 5: Cooking Oil and Calculation Tolerance -->
+        <div class="p-3.5 rounded-2xl bg-[var(--sidebar)] border border-[var(--border)] text-[11px] text-[var(--muted-foreground)] space-y-1.5">
+          <div class="font-bold text-[var(--foreground)]">🍳 第五條：計算公差與烹調用油提醒</div>
+          <p>
+            各項食物卡路里與蛋白質數值係參考衛福部國健署公開之《食品營養成分資料庫》進行換算。食物受產地、時令、份量大小、生熟轉換及各店家烹調手法影響，數據均為參考推估值；<strong>總熱量未計入每日烹煮時額外使用之食用油與沾醬</strong>，敬請使用者自行斟酌留意。
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Close Button -->
+      <div class="pt-2 border-t border-[var(--border)] flex justify-end">
+        <button type="button" onclick="closeLegalModal()" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition">
+          我已閱讀並理解以上聲明
+        </button>
+      </div>
+
+    </div>
+  </div>
+
   <!-- Toast Notification Box -->
   <div id="toastNotification" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-xl shadow-xl text-xs font-bold transition-all duration-300 pointer-events-none transform -translate-y-6 opacity-0 flex items-center gap-2 bg-emerald-600 text-white">
     <span>✅ 已加入今日飲食！</span>
@@ -682,10 +815,10 @@
         proteinPerUnit: 0, 
         caloriesPerUnit: 42, 
         hideProtein: true, 
-        note: '清爽提升代謝與水分，熱量僅 42 大卡 (無須計蛋白)', 
+        note: '清爽補充水分與元氣，熱量僅 42 大卡 (無須計蛋白)', 
         icon: '⚡', 
         popular: true, 
-        keywords: ['活力A', '活力飲', '活力茶', '代謝茶', '活力', '茶'] 
+        keywords: ['活力A', '活力飲', '活力茶', '草本茶', '活力', '茶'] 
       },
       { 
         id: 'energy_bb', 
@@ -1098,6 +1231,16 @@
     function closeQuickLogModal() {
       const modal = document.getElementById('quickLogModal');
       modal.classList.add('hidden');
+    }
+
+    function openLegalModal() {
+      const modal = document.getElementById('legalModal');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeLegalModal() {
+      const modal = document.getElementById('legalModal');
+      if (modal) modal.classList.add('hidden');
     }
 
     function setModalMeal(meal) {
